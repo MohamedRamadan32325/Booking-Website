@@ -93,16 +93,6 @@ Pharaogo follows a traditional ASP.NET Core MVC architecture with:
 * **Entity Framework Core** for data access and migrations
 * **Dependency Injection** for service management
 
-## API Endpoints
-
-| Method | Endpoint               | Description                       |
-| ------ | ---------------------- | --------------------------------- |
-| GET    | `/Bookings`            | Retrieve all bookings             |
-| POST   | `/Bookings/Create`     | Create a new booking              |
-| GET    | `/Users/{id}`          | Fetch user profile                |
-| GET    | `/Api/Hotels`          | List available hotel rooms (JSON) |
-| POST   | `/Api/Museums/Tickets` | Reserve museum tickets (JSON)     |
-
 ## Testing
 
 Run unit and integration tests using the .NET CLI:
