@@ -1,0 +1,33 @@
+﻿.card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+.card-header {
+    color: white;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+}
+
+    .table th,
+    .table td {
+        vertical-align: middle;
+    }
+
+.btn-primary {
+    background-color: #d5c188;
+    border-color: #d5c188;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+    .btn-primary:hover {
+        background-color: #a59056;
+        border-color: #a59056;
+    }

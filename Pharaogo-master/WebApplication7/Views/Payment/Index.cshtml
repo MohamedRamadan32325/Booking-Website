@@ -1,0 +1,37 @@
+﻿@model decimal
+<link href="/css/PaymentIndex.css" rel="stylesheet" />
+<div class="wrapper">
+    <div class="payment-container">
+        <h2>Credit Card Payment</h2>
+        <form asp-action="Success" method="POST">
+            <div class="form-group">
+                <label for="name">Cardholder Name</label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cardnumber">Card Number</label>
+                <input type="text" id="cardnumber" name="cardnumber" placeholder="1234 5678 9012 3456" required maxlength="19">
+            </div>
+
+            <div class="form-group inline-group">
+                <div>
+                    <label for="expirationdate">Expiration Date</label>
+                    <input type="text" id="expirationdate" name="expirationdate" placeholder="MM/YY" required maxlength="5">
+                </div>
+
+                <div>
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" required maxlength="3">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="text" id="amount" name="amount" placeholder="@Model" readonly>
+            </div>
+
+            <button type="submit" class="pay-btn" formtarget="_self">Pay Now</button>
+        </form>
+    </div>
+</div>

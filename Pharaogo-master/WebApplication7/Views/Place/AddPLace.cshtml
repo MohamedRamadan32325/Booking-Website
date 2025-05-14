@@ -1,0 +1,141 @@
+﻿@model WebApplication7.Models.Place
+
+<h1>New Place</h1>
+<div>
+    <form asp-action="SavePlace" asp-controller="Place" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label asp-for="Place_Name" class="control-label"></label>
+            <input asp-for="Place_Name" class="form-control" />
+            <span asp-validation-for="Place_Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Place_Type" class="control-label"></label>
+            <select asp-for="Place_Type" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                <option value="">-- Select Place Type --</option>
+                <option value="Museum" selected>Museum</option>
+                <option value="Hotel">Hotel</option>
+            </select>
+            <span asp-validation-for="Place_Type" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Place_City" class="control-label"></label>
+            <select asp-for="Place_City" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                <option value="">-- Select City --</option>
+                <option value="Cairo" selected>Cairo</option>
+                <option value="Alexandria">Alexandria</option>
+                <option value="Giza">Giza</option>
+                <option value="Suez">Suez</option>
+                <option value="Luxor">Luxor</option>
+                <option value="Luxor">Aswan</option>
+                <option value="Asyut">Asyut</option>
+                <option value="Tanta">Tanta</option>
+                <option value="Ismailia">Ismailia</option>
+                <option value="Faiyum">Faiyum</option>
+                <option value="Hurghada">Hurghada</option>
+                <option value="Sharm El Sheikh">Sharm El Sheikh</option>
+            </select>
+            <span asp-validation-for="Place_City" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Place_Price" class="control-label"></label>
+            <input asp-for="Place_Price" class="form-control" />
+            <span asp-validation-for="Place_Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Place_Rating" class="control-label"></label>
+            <input asp-for="Place_Rating" class="form-control" />
+            <span asp-validation-for="Place_Rating" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <input type="file" asp-for="clientFile" onchange="loadFile(event)" class="form-control" id="imageInput" multiple />
+        </div>
+
+        <!-- Container for the image previews -->
+        <div id="imagePreviewContainer" class="col-md-4 mt-2"></div>
+
+        <br />
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function loadFile(event) {
+            const imageInput = document.getElementById("imageInput");
+            const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+
+            // Clear any previous image previews
+            imagePreviewContainer.innerHTML = '';
+
+            const files = imageInput.files;
+
+            if (files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        // Create a div for each image
+                        const imgContainer = document.createElement("div");
+                        imgContainer.style.marginBottom = "10px";
+
+                        // Create an img element for each file
+                        const imgElement = document.createElement("img");
+                        imgElement.src = e.target.result;
+                        imgElement.alt = "Selected Image";
+                        imgElement.style.maxWidth = "200px";
+                        imgElement.style.display = "block";
+                        imgElement.style.marginBottom = "10px";
+
+                        // Append image to the container
+                        imgContainer.appendChild(imgElement);
+                        imagePreviewContainer.appendChild(imgContainer);
+                    };
+
+                    // Read the file as a data URL (base64 encoded)
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+    </script>
+}
+
+<style>
+    .btn-primary {
+        background-color: #d5c188;
+        border-color: #d5c188;
+    }
+
+        .btn-primary:hover {
+            background-color: #a59056;
+            border-color: #a59056;
+        }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+</style>

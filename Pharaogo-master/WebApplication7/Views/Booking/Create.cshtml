@@ -1,0 +1,69 @@
+﻿@using Microsoft.IdentityModel.Tokens
+@model WebApplication7.ViewModels.BookingViewModel
+<link href="~/css/BookingCreate.css" rel="stylesheet" />
+
+<div class="container2">
+    <h2 class="text-center mb-4">@Model.PlaceName</h2>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            @if (Model.imageSrc == null || Model.imageSrc[0] == "")
+            {
+                <img src="\Images\no-image-found.jpg" alt="NO Image" class="booking-image" />
+            }
+            else
+            {
+                <img src="@Model.imageSrc[0]" alt="Place Image" class="booking-image" />
+            }
+            <p class="text-center mt-3">@Model.Description</p>
+        </div>
+    </div>
+
+    <form asp-action="Payment" asp-route-numberofguests="numberofguests" asp-route-model="@Model" asp-route-id="@Model.PlaceID" method="get" class="mt-4">
+        @if (Model.PlaceType == "Hotel")
+        {
+            <div class="row booking-form-row">
+                <div class="col-md-4 booking-form-group">
+                    <label asp-for="dayes" class="control-label"></label>
+                    <input asp-for="dayes" type="number" class="form-control booking-input" min="1" required placeholder="Number of Days" />
+                    <span asp-validation-for="dayes" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 booking-form-group">
+                    <label asp-for="CheckInDate" class="control-label"></label>
+                    <input asp-for="CheckInDate" type="date" class="form-control booking-input" required />
+                </div>
+                <div class="col-md-4 booking-form-group">
+                    <label asp-for="CheckOutDate" class="control-label"></label>
+                    <input asp-for="CheckOutDate" type="date" class="form-control booking-input" required />
+                </div>
+            </div>
+        }
+        @if (Model.PlaceType != "Hotel")
+        {
+            <div class="row booking-form-row">
+            <div class="col-md-4 booking-form-group">
+                <label asp-for="AvilableDate" class="control-label"></label>
+                <input asp-for="AvilableDate" type="date" class="form-control booking-input" required />
+            </div>
+            </div>
+        }
+
+
+        <div class="row booking-form-row">
+            <div class="col-md-4 booking-form-group">
+                <label asp-for="NumberOfGuests" class="control-label"></label>
+                <input asp-for="NumberOfGuests" type="number" class="form-control booking-input" min="1" required placeholder="Number of Guests" />
+            </div>
+
+            <div class="col-md-4 booking-form-group">
+                <label asp-for="PromotionCode" class="control-label"></label>
+                <input asp-for="PromotionCode" class="form-control booking-input" placeholder="Promotion Code (if any)" />
+                <span asp-validation-for="PromotionCode" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg" formtarget="_self">Book Now</button>
+        </div>
+    </form>
+</div>

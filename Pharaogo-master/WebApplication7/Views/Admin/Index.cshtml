@@ -1,0 +1,128 @@
+﻿@model List<Place>
+
+<div class="container mt-4">
+
+    <h3 class="mt-4">Museums</h3>
+
+    <!-- Search bar for Museums -->
+    <input type="text" id="museumSearch" onkeyup="searchTable('museumTable', 'museumSearch')" placeholder="Search Museums by Name or City" class="form-control mb-3">
+
+    <table class="table" id="museumTable">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">City</th>
+                <th scope="col">Price (EGP)</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var place in Model.Where(p => p.Place_Type == "Museum"))
+            {
+                <tr>
+                    <td>@place.Place_Id</td>
+                    <td>@place.Place_Name</td>
+                    <td>@place.Place_City</td>
+                    <td>@place.Place_Price</td>
+                    <td>@place.Place_Rating</td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Place" asp-route-id="@place.Place_Id" class="btn btn-link">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3 class="mt-4">Hotels</h3>
+
+    <!-- Search bar for Hotels -->
+    <input type="text" id="hotelSearch" onkeyup="searchTable('hotelTable', 'hotelSearch')" placeholder="Search Hotels by Name or City" class="form-control mb-3">
+
+    <table class="table" id="hotelTable">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">City</th>
+                <th scope="col">Price (EGP)</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var place in Model.Where(p => p.Place_Type == "Hotel"))
+            {
+                <tr>
+                    <td>@place.Place_Id</td>
+                    <td>@place.Place_Name</td>
+                    <td>@place.Place_City</td>
+                    <td>@place.Place_Price</td>
+                    <td>@place.Place_Rating</td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Place" asp-route-id="@place.Place_Id" class="btn btn-link">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-grid gap-2 col-6 mx-auto mt-4">
+        <a class="btn btn-primary" asp-action="AddPlace" asp-controller="Place">Add Place</a>
+        <a class="btn btn-primary" asp-action="Index" asp-controller="Promotion">Promotions</a>
+        <a class="btn btn-primary" >Manage Tour Guide</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function searchTable(tableId, searchId) {
+            // Get the input value and table elements
+            let input = document.getElementById(searchId);
+            let filter = input.value.toLowerCase();
+            let table = document.getElementById(tableId);
+            let tr = table.getElementsByTagName("tr");
+
+            // Loop through table rows and hide those that don't match the search query
+            for (let i = 1; i < tr.length; i++) { // Start at 1 to skip table header
+                let tdName = tr[i].getElementsByTagName("td")[1]; // Get 'Name' column
+                let tdCity = tr[i].getElementsByTagName("td")[2]; // Get 'City' column
+                if (tdName || tdCity) {
+                    let nameValue = tdName.textContent || tdName.innerText;
+                    let cityValue = tdCity.textContent || tdCity.innerText;
+                    if (nameValue.toLowerCase().indexOf(filter) > -1 || cityValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+}
+
+<style>
+    .btn-primary {
+        background-color: #d5c188;
+        border-color: #d5c188;
+    }
+
+        .btn-primary:hover {
+            background-color: #a59056;
+            border-color: #a59056;
+        }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+
+    .thead-dark {
+        background-color: #343a40;
+        color: white;
+    }
+</style>

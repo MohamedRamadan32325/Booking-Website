@@ -1,0 +1,88 @@
+﻿/* Profile Section */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+.profile-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 30px;
+}
+
+/* Profile Card */
+.profile-card {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+    .profile-card h4 {
+        margin: 10px 0;
+        color: #333;
+    }
+
+    .profile-card p {
+        color: #777;
+    }
+
+/* Form Section */
+.form-section {
+    margin-top: 20px;
+}
+
+    .form-section h5 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+.form-label {
+    font-weight: bold;
+}
+
+/* Input Styles */
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+/* Button Styles */
+
+
+.btn-primary {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+    background-color: #d5c188;
+    border-color: #d5c188;
+}
+
+    .btn-primary:hover {
+        background-color: #a59056;
+        border-color: #a59056;
+    }
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+/* Responsive Styles */
+@media (max-width: 576px) {
+    .form-section .row {
+        flex-direction: column;
+    }
+
+    .form-section .col {
+        margin-bottom: 15px;
+    }
+}

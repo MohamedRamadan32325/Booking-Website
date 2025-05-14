@@ -1,0 +1,86 @@
+﻿.container2 {
+    background: #ffffff; /* Background color */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Shadow for depth */
+    padding: 40px; /* Padding inside the card */
+    margin: 0 auto; /* Center the card */
+    width: 90%; /* Make the card responsive */
+    max-width: 800px; /* Set a maximum width */
+    height: auto; /* Auto height */
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+}
+
+/* Increased image size specifically for booking images */
+.booking-image {
+    max-width: 100%; /* Ensure the image is responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Rounded corners */
+    width: 100%; /* Full width */
+    max-height: 500px; /* Increase the maximum height */
+    margin-bottom: 20px; /* Space below the image */
+}
+
+
+/* Button Styles */
+.btn-primary {
+    background-color: #d5c188; /* Main button color */
+    border-color: #d5c188; /* Border color */
+    padding: 12px 20px; /* Increased padding */
+    font-size: 1.2em; /* Slightly larger font size */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transition effects */
+    width: 100%; /* Full width */
+}
+
+    .btn-primary:hover {
+        background-color: #a59056; /* Darker on hover */
+        border-color: #a59056; /* Darker border on hover */
+        transform: translateY(-2px); /* Lift effect on hover */
+    }
+
+/* Input Styles */
+.booking-input {
+    font-size: 1.1em; /* Increase font size */
+    padding: 15px; /* Increase padding for input fields */
+    height: 50px; /* Set a fixed height */
+}
+
+/* Form Styles */
+.booking-form-group {
+    margin-bottom: 20px; /* Increased space between form groups */
+    width: 100%; /* Full width */
+}
+
+.control-label {
+    font-weight: bold; /* Make labels bold */
+    margin-bottom: 5px; /* Space below labels */
+}
+
+.text-danger {
+    font-size: 0.9em; /* Slightly smaller error message */
+    color: #dc3545; /* Bootstrap's danger color */
+}
+.booking-form-row {
+    margin-bottom: 20px; /* Space between rows of inputs */
+}
+
+.booking-form-group {
+    margin-bottom: 0; /* Remove bottom margin for groups in a row */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container2 {
+        padding: 20px; /* Adjust padding on smaller screens */
+        width: 95%; /* Make it slightly wider on small screens */
+    }
+
+    .btn-primary {
+        font-size: 1em; /* Adjust font size for smaller screens */
+    }
+
+    .booking-image {
+        width: 100%; /* Full width on smaller screens */
+    }
+}

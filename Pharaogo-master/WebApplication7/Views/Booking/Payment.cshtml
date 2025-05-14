@@ -1,0 +1,21 @@
+﻿@model WebApplication7.ViewModels.PaymentViewModel
+<link href="/css/Payment.css" rel="stylesheet" />
+<div class="payment-summary">
+    <h2>Payment Summary</h2>
+
+    <div class="payment-details">
+        <p><strong>Total Amount:</strong> @Model.TotalAmount EGP</p>
+        <p><strong>Number Of Guests:</strong> @Model.NumberOfGuests</p>
+        <p><strong>Total Amount After Discount:</strong> @Model.TotalAmountAfterDiss EGP</p>
+        <p><strong>Payment Code:</strong> @Model.PaymentCode</p>
+        @if (Model.TotalDayes != null)
+        {
+            <p><strong>Total Dayes:</strong> @Model.TotalDayes</p>
+        }
+    </div>
+
+    <form asp-action="Index" asp-controller="Payment" asp-route-price="@Model.TotalAmountAfterDiss" method="post">
+        <input type="hidden" asp-for="TotalAmount" />
+        <button type="submit" class="confirm-btn">Confirm Payment</button>
+    </form>
+</div>

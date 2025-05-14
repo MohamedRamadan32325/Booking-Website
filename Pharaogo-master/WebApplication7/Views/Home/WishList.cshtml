@@ -1,0 +1,109 @@
+﻿@model WebApplication7.ViewModels.WishLlistViewModel
+<link href="/css/Index.css" rel="stylesheet" />
+<section class="hotel-listings ">
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-info">@Model.Message</div>
+
+    }
+    else
+    {
+        @foreach (var item in Model.places)
+        {
+
+            <!-- Card 1 -->
+            <div class="hotel-card-wrapper">
+                <!-- Transparent button for the heart icon, hidden initially -->
+                <div class="heart-icon">
+                    <button type="button" class="heart-btn" onclick="favoritePlace(@item.Place_Id);">
+                        <img src="/Images/heartblack.png" alt="Heart Icon" />
+                    </button>
+                </div>
+
+                <!-- The large clickable card -->
+                <a asp-action="GetPlace" asp-controller="Home" asp-route-id="@item.Place_Id">
+                    <form>
+                        <div class="hotel-card">
+                            @if (item.imageSrc == null || item.imageSrc[0] == "")
+                            {
+                                <img src="\Images\no-image-found.jpg" alt="NOImage" />
+                            }
+                            else
+                            {
+                                <img src="@item.imageSrc[0]" alt="Place Image" />
+                            }
+                            <div class="hotel-info">
+                                <h3>@item.Place_Name</h3>
+                                <div class="star-rating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        int temp;
+
+                                        if (int.TryParse(item.Place_Rating, out temp))
+                                        {
+                                            // Parsing successful, use temp
+                                            temp = Convert.ToInt32(item.Place_Rating);
+                                        }
+                                        else
+                                        {
+                                            // Handle invalid format case
+                                            temp = 0;
+                                        }
+                                        if (i <= (temp))
+                                        {
+                                            <!-- Full star for each whole number -->
+                                            <span class="full-star">&#9733;</span>
+                                        }
+                                        else if (i - 1 < temp && temp < i)
+                                        {
+                                            <!-- Half star for fractional ratings (if any) -->
+                                            <span class="half-star">&#9734;</span>
+                                        }
+                                        else
+                                        {
+                                            <!-- Empty star for numbers beyond the rating -->
+                                            <span class="empty-star">&#9734;</span>
+                                        }
+                                    }
+                                    <span class="rating-number">(@item.Place_Rating)</span>
+                                </div>
+
+                                <p><span class="new-price">Price: @item.Place_Price EGP</span></p>
+                            </div>
+                        </div>
+                    </form>
+                </a>
+            </div>
+        }
+
+    }
+
+    <style>
+        .star-rating {
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .full-star, .empty-star, .half-star {
+            font-size: 1.5rem;
+            color: gold;
+        }
+
+        .half-star {
+            color: lightgray;
+        }
+
+        .rating-number {
+            margin-left: 8px;
+            font-size: 1rem;
+            color: #333;
+        }
+    </style>
+    <script>
+        function favoritePlace(placeId) {
+            window.location.href = '/Home/Deletewish/' + placeId;
+        }
+    </script>
+</section>

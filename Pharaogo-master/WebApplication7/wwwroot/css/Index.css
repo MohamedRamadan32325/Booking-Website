@@ -1,0 +1,310 @@
+﻿
+.hero {
+    @* position: relative;
+    *@ height: 60vh;
+    width: 100%;
+    padding-top: 520px;
+
+    @* background-image: url('/Image/Home.jpeg');
+    *@ /* Replace with your image URL */
+    @* background-size: cover;
+    background-position: center;
+    *@
+}
+.content {
+    display: flex; /* Use flexbox for the content */
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    text-align: center; /* Center-align the text */
+    height: 100%; /* Ensure the content takes the full height of the parent */
+    width: 100%; /* Ensure the content takes the full width of the parent */
+    flex-direction: column; /* Stack child elements vertically */
+}
+
+    .hero video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -1;
+        transform: translate(-50%, -50%); /* Centers the video */
+        object-fit: cover; /* Ensures the video covers the entire hero section */
+    }
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @* background-color: rgba(0, 0, 0, 0.5); /* Dark overlay to make text stand out */
+    *@ display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.content h1 {
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.content p {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+    background-color: #d5c188;
+    border-color: #d5c188;
+}
+
+    .cta-button:hover {
+        background-color: #ff4500;
+    }
+
+/* Footer navigation */
+.footer-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ddd0a1;
+    padding: 1rem 0;
+}
+
+.nav-item {
+    text-align: center;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.nav-label {
+    font-size: 1rem;
+}
+
+.hotel-listings {
+    display: flex; /* Use flexbox for horizontal layout */
+    flex-wrap: wrap; /* Allow wrapping to the next line if space runs out */
+    gap: 20px; /* Space between cards */
+    padding: 20px; /* Padding around the section */
+    justify-content: center; /* Center the cards in the container */
+}
+
+.hotel-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    flex: 1 1 300px; /* Allow cards to grow, shrink, and have a base width of 300px */
+    min-width: 250px; /* Minimum width for each card */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+    .hotel-card:hover {
+        transform: scale(1.05); /* Slightly increase the size of the card */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a larger shadow on hover */
+    }
+
+
+    .hotel-card img {
+        width: 100%;
+        height: 150px; /* Fixed height for the image */
+        object-fit: cover; /* Cover the space without distortion */
+    }
+
+.hotel-info {
+    padding: 15px; /* Padding inside the hotel info section */
+}
+
+    .hotel-info h3 {
+        font-size: 18px; /* Font size for the place name */
+        margin-bottom: 8px; /* Space below the title */
+    }
+
+    .hotel-info .rating {
+        font-size: 14px; /* Font size for the rating */
+        color: #2c9c1a; /* Color for the rating */
+    }
+
+.new-price {
+    font-weight: bold; /* Bold style for the price */
+    color: #000; /* Color for the price */
+    font-size: 16px; /* Font size for the price */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+/* Wrapper for the hotel card and heart icon */
+.hotel-card-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Style for the heart icon button to make it transparent */
+.heart-btn {
+    background: none; /* No background */
+    border: none; /* No border */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+    .heart-btn img {
+        width: 24px; /* Set a fixed size for the heart icon */
+        height: 24px; /* Set a fixed size for the heart icon */
+    }
+
+/* Position the heart icon on top of the card */
+.heart-icon {
+    position: absolute;
+    top: 10px; /* Adjust to your desired position */
+    right: 10px; /* Adjust to your desired position */
+    z-index: 1; /* Ensure it stays on top of the image */
+}
+
+/* The hotel-card styles remain the same */
+.hotel-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    flex: 1 1 300px;
+    min-width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .hotel-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+
+    .hotel-card:hover .heart-icon {
+        opacity: 1; /* Make the heart icon fully opaque when hovering over the card */
+    }
+.star-rating {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.full-star, .empty-star, .half-star {
+    font-size: 1.5rem;
+    color: gold;
+}
+
+.half-star {
+    color: lightgray;
+}
+
+.rating-number {
+    margin-left: 8px;
+    font-size: 1rem;
+    color: #333;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: #333; /* Default text color */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: Arial, sans-serif; /* Set a clean font */
+}
+
+.nav-icon {
+    margin-right: 10px;
+    display: inline-flex;
+}
+
+.nav-label1 {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: capitalize;
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+/* Change text color on hover */
+.nav-item:hover .nav-label1 {
+    color: #55190ed9; /* Change this to the hover color you prefer */
+}
+
+.nav-item img {
+    border-radius: 4px; /* Slight rounding of the image */
+}
+
+.nav-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.nav-item.active {
+    background-color: #e0e0e0; /* Active state background */
+    color: #55190ed9; /* Active state text color */
+}
+button {
+   
+}
+
+    /* Log in button style */
+    button.login {
+        background-color: #d2b48c; /* Tan color */
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        button.login:hover {
+            background-color: #a59056; /* Dark goldenrod on hover */
+        }
+
+    /* Sign up button style */
+    button.signup {
+        background-color: transparent;
+        border: 2px solid white; /* Light blue border */
+        color: white; /* Light blue text */
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #ddd0a1;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        button.signup:hover {
+            background-color: #a59056;
+            color: white;
+        }
+
+/* Additional styling for buttons on a dark background */

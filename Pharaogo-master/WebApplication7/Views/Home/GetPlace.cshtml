@@ -1,0 +1,121 @@
+﻿@model WebApplication7.ViewModels.PlaceViewModel
+
+@{
+    ViewData["Title"] = "GetPlace";
+}
+<link href="/css/GetPlace.css" rel="stylesheet" />
+<div class="ad-container">
+    <div class="text-container">
+        <h1>@Model.SpecificPlace.Place_Name</h1>
+        <h3>@Model.SpecificPlace.Place_City</h3>
+        <p>@Model.SpecificPlace.Description</p>
+        <div class="star-rating">
+            @for (int i = 1; i <= 5; i++)
+            {
+                int temp;
+                if (int.TryParse(@Model.SpecificPlace.Place_Rating, out temp))
+                {
+                    temp = Convert.ToInt32(@Model.SpecificPlace.Place_Rating);
+                }
+                else
+                {
+                    temp = 0;
+                }
+                if (i <= (temp))
+                {
+                    <span class="full-star">&#9733;</span>
+                }
+                else if (i - 1 < temp && temp < i)
+                {
+                    <span class="half-star">&#9734;</span>
+                }
+                else
+                {
+                    <span class="empty-star">&#9734;</span>
+                }
+            }
+            <span class="rating-number">(@Model.SpecificPlace.Place_Rating)</span>
+        </div>
+
+        <p>@Model.SpecificPlace.Place_Price EGP</p>
+        <a href="/Booking/Create/@Model.SpecificPlace.Place_Id" class="btn-primary">Book Now</a>
+    </div>
+
+   <div class="image-container">
+   <div class="image-gallery">
+        @if (Model.SpecificPlace.imageSrc == null)
+        {
+            <img src="/Images/no-image-found.jpg" alt="No Image Available" />
+        }
+        else
+        {
+            @foreach (var image in Model.SpecificPlace.imageSrc)
+            {
+                <img src="@image" alt="Place Image" class="gallery-image" />
+            }
+        }
+    </div>
+</div>
+</div>
+
+<div class="rating-box">
+    <h2>Rate this Place</h2>
+    <form class="rating-form" asp-action="UpdateRate" asp-route-id="@Model.SpecificPlace.Place_Id" method="post">
+        <div class="star-rating">
+            <input type="radio" id="star5" name="rating" value="5" required>
+            <label for="star5" title="5 stars">&#9733;</label>
+
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4" title="4 stars">&#9733;</label>
+
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3" title="3 stars">&#9733;</label>
+
+            <input type="radio" id="star2" name="rating" value="2">
+            <label for="star2" title="2 stars">&#9733;</label>
+
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1" title="1 star">&#9733;</label>
+        </div>
+
+        <button type="submit" class="btn-primary">Submit Review</button>
+    </form>
+    <p class="rating-output" hidden>Current Rating: <span id="current-rating">0</span></p>
+</div>
+
+<h3 class="reviews-title">People Reviews</h3>
+<div class="reviews-container" id="review">
+    @foreach (var item in Model.review)
+    {
+        <div class="review-item">
+            <p class="" style="font:bold">@item.UserName</p>
+            <p class="review-comment">@item.Comment</p>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="DeleteReview" asp-route-id="@item.Review_Id" asp-route-placeid="@Model.SpecificPlace.Place_Id">Delete</a>
+            }
+        </div>
+    }
+</div>
+
+@if (User.Identity.IsAuthenticated == true)
+{
+    <form asp-action="AddReview" asp-route-PlaceId="@Model.SpecificPlace.Place_Id" asp-route-Review="@Model.Review" class="review-form">
+        <div class="form-group">
+            <textarea asp-for="Review" class="form-control review-textarea"></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Send Review</button>
+    </form>
+}
+
+<h3>Places You Might Like</h3>
+<partial name="_PlacesPartial" model="Model"></partial>
+<script>
+    const ratingForm = document.querySelector('.rating-form');
+    const ratingOutput = document.getElementById('current-rating');
+
+    ratingForm.addEventListener('change', function () {
+        const selectedRating = ratingForm.querySelector('input[name="rating"]:checked').value;
+        ratingOutput.textContent = selectedRating;
+    });
+</script>

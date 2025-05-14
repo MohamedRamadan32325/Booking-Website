@@ -1,0 +1,45 @@
+﻿.payment-summary {
+    background-color: #fff; /* White background for the payment summary */
+    padding: 20px; /* Padding around the content */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    max-width: 400px; /* Maximum width of the container */
+    width: 100%; /* Full width for smaller screens */
+    margin: 20px auto; /* Center the payment summary with margin */
+}
+
+h2 {
+    text-align: center; /* Center the heading text */
+    color: #333; /* Dark color for heading */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.payment-details p {
+    font-size: 16px; /* Font size for details */
+    margin-bottom: 10px; /* Space between paragraphs */
+    color: #555; /* Slightly lighter color for details */
+}
+
+    .payment-details p strong {
+        color: #333; /* Dark color for strong text */
+    }
+
+form {
+    text-align: center; /* Center the form content */
+}
+
+.confirm-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+    background-color: #d5c188;
+    border-color: #d5c188;
+}
+
+    .confirm-btn:hover {
+        background-color: #a59056; /* Darker blue on hover */
+    }

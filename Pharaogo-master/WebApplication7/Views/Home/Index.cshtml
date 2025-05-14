@@ -1,0 +1,208 @@
+﻿@using WebApplication7.Repositry;
+@using WebApplication7.Repositry.IRepositry;
+@model WebApplication7.ViewModels.PlaceViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+<!doctype html>
+<link href="/css/Index.css" rel="stylesheet" />
+<body>
+    <section class="hero">
+        <video autoplay muted loop playsinline>
+            <source src="/Videos/Let s Go - Egypt A Beautiful Destinations Original.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="overlay">
+            <div class="content">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
+                @if (User.Identity.IsAuthenticated == false)
+                {
+                    <h3> Welcome to PharaoGo <br><br> Book your trip now! </h3> <br>
+                }
+                @if (User.IsInRole("Visitor"))
+                {
+                    <h3> Welcome @User.Identity.Name to PharaoGo <br><br> Book your trip now! </h3>
+                }
+
+                <br>
+
+                <div style="text-align: center;">
+                    @if (User.Identity.IsAuthenticated == false)
+                    {
+                        <a href="/Account/Login">
+                            <button class="login">Log in</button>
+                        </a>
+                        <a href="/Account/Register">
+                            <button class="signup">Sign up</button>
+                        </a>
+
+                    }
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <nav class="footer-nav">
+
+
+        <a href="#" onclick="GetData('Hotels')" class="nav-item">
+            <span class="nav-icon">
+                <img src="/Images/hotel.png" alt="Alternate Text" style="width: 24px; height: 24px; object-fit: contain; display: inline-block; " />
+            </span>
+            <span class="nav-label1">Hotels</span>
+        </a>
+        <a href="#" onclick="GetData('Museums')" class="nav-item">
+            <span class="nav-icon"><img src="/Images/icons8-pharaoh-60.png" alt="Alternate Text" style="width: 24px; height: 24px; object-fit: contain; display: inline-block; " /></span>
+            <span class="nav-label1">Museum</span>
+        </a>
+
+
+
+    </nav>
+
+    @* <section class="hotel-listings "> *@
+    <div id="PlaceDetails">
+        <section class="hotel-listings ">
+
+            @foreach (var item in Model.RelatedPlaces)
+            {
+
+                <div class="hotel-card-wrapper">
+                    <!-- Transparent button for the heart icon, hidden initially -->
+                    @if (User.Identity.IsAuthenticated == true)
+                    {
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <div class="heart-icon">
+                                <button type="button" class="heart-btn" onclick="favoritePlace(@item.Place_Id);">
+                                    <img src="/Images/heart.png" alt="Heart Icon" />
+                                </button>
+                            </div>
+                        }
+
+                    }
+                    <!-- The large clickable card -->
+                    <a asp-action="GetPlace" asp-controller="Home" asp-route-id="@item.Place_Id">
+                        <form>
+                            <div class="hotel-card">
+                                @if (item.imageSrc == null || item.imageSrc[0] == "")
+                                {
+                                    <img src="\Images\no-image-found.jpg" alt="NOImage" />
+                                }
+                                else
+                                {
+                                    <img src="@item.imageSrc[0]" alt="Place Image" />
+                                }
+                                <div class="hotel-info">
+                                    <h3>@item.Place_Name</h3>
+                                    <div class="star-rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+
+                                            int temp;
+
+                                            if (int.TryParse(item.Place_Rating, out temp))
+                                            {
+                                                // Parsing successful, use temp
+                                                temp = Convert.ToInt32(item.Place_Rating);
+                                            }
+                                            else
+                                            {
+                                                // Handle invalid format case
+                                                temp = 0;
+                                            }
+                                            if (i <= (temp))
+                                            {
+                                                <!-- Full star for each whole number -->
+                                                <span class="full-star">&#9733;</span>
+                                            }
+                                            else if (i - 1 < temp && temp < i)
+                                            {
+                                                <!-- Half star for fractional ratings (if any) -->
+                                                <span class="half-star">&#9734;</span>
+                                            }
+                                            else
+                                            {
+                                                <!-- Empty star for numbers beyond the rating -->
+                                                <span class="empty-star">&#9734;</span>
+                                            }
+                                        }
+
+                                        <span class="rating-number">(@item.Place_Rating)</span>
+                                    </div>
+                                    <p><span class="new-price">Price: @item.Place_Price EGP</span></p>
+                                </div>
+                            </div>
+                        </form>
+                    </a>
+                </div>
+            }
+
+        </section>
+
+    </div>
+    <style>
+        .star-rating {
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .full-star, .empty-star, .half-star {
+            font-size: 1.5rem;
+            color: gold;
+        }
+
+        .half-star {
+            color: lightgray;
+        }
+
+        .rating-number {
+            margin-left: 8px;
+            font-size: 1rem;
+            color: #333;
+        }
+    </style>
+</body>
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script>
+        function GetData(name) {
+            event.preventDefault();
+            $.ajax({
+                url: "/Home/" + name,
+                success: function (result) {
+
+                    document.getElementById("PlaceDetails").innerHTML = result;
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching student data: ", error);
+                }
+            });
+        }
+        window.onload = function () {
+            GetData('_PlacesPartial');
+        };
+
+    </script>
+    @if (Model.Message != null)
+    {
+        <script>
+            alert(@Model.Message);
+        </script>
+    }
+
+    <script>
+        function favoritePlace(placeId) {
+            window.location.href = '/Home/FavouritePlace/' + placeId;
+        }
+    </script>
+}

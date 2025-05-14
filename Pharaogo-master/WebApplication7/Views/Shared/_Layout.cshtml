@@ -1,0 +1,255 @@
+﻿@using System.Security.Claims
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>PharaoGo</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="/assets/img/LOGO.png" rel="icon" >
+    <link href="/assets/img/LOGO.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .rajdhani-light {
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        .rajdhani-regular {
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .rajdhani-medium {
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        .rajdhani-semibold {
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        .rajdhani-bold {
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+    </style>
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/HomePage/css/bootstrap.min.css">
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: HeroBiz
+    * Template URL: https://bootstrapmade.com/herobiz-bootstrap-business-template/
+    * Updated: Aug 07 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+<body>
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+            <a href="/Home/Index" class="logo d-flex align-items-center me-auto me-xl-0">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <img src="/assets/img/LOGO.png" alt="" style="width:80px">
+                <h1 class="sitename" style=" font-family:  Rajdhani, sans-serif;
+                    font-weight: 500;
+                    font-style: normal;">
+                    PharaoGo
+                </h1>
+                
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a asp-action="Index" asp-controller="Home" class="active">Home<br></a></li>
+
+                    @* <li><a href="#team">Team</a></li> *@
+                    @* <li><a href="blog.html">Blog</a></li> *@
+                    <li class="dropdown">
+                        <a href="#"><span>Places</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li><a asp-action="Header_Hotels" asp-controller="Home">Hotels</a></li>
+
+                            <li><a asp-action="Header_Museums" asp-controller="Home">Musuems</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a asp-action="AboutUs" asp-controller="Home">About Us</a></li>
+                    <li class="dropdown">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a href="#" class="settings-icon" onclick="toggleDropdown(event)">
+                                <img src="~/Images/settings.png" width="20px" />
+                                <i class="bi bi-chevron-down toggle-dropdown"></i>
+                            </a>
+                            <ul>
+                                <li><a href="/User/Edit">Profile</a></li>
+                                @if (User.IsInRole("Visitor"))
+                                {
+                                    <li><a href="/Home/WishList?id=@User.FindFirstValue(ClaimTypes.NameIdentifier)">WishList</a></li>
+                                }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a href="/Admin/Index">Settings</a></li>
+                                }
+                                <li><a href="/Account/Logout">Logout</a></li>
+                            </ul>
+                        }
+                    </li>
+
+
+                    </ul>
+            </nav>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+           
+
+
+
+            <form class="d-flex" asp-controller="Search" asp-action="Index" method="get">
+                <input class="form-control mr-2" type="search" name="MaxPrice" placeholder="Enter max price" aria-label="Search">
+                <input class="form-control mr-2" type="search" name="searchQuery" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline" name="search_icon" type="submit" >Search</button>
+            </form>
+            <style>
+                .btn-outline {
+                    color: #a59056;
+                    border-color: white;
+                    background-color: white;
+                }
+
+                    .btn-outline:hover {
+                        color: white;
+                        border-color: #a59056;
+                        background-color: #a59056;
+                    }
+            </style>
+           
+        </div>
+    </header>
+    @*  <style>
+    .header {
+    color: var(--default-color);
+    background-color: #3d251e;
+    padding: 20px 0;
+    transition: all 0.5s;
+    z-index: 997;
+    }
+    </style> *@
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer id="footer" class="footer dark-background">
+
+        <div class="footer-top">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-4 col-md-6 footer-about">
+                        <a asp-action="Index" asp-controller="Home" class="logo d-flex align-items-center">
+                            <span class="sitename">PharaoGo</span>
+                        </a>
+                        <div class="footer-contact pt-3">
+                            <p class="mt-3"><strong>Phone:</strong> <span>+201159011052</span></p>
+                            <p><strong>Email:</strong> <span>mr2407@fayoum.edu.eg</span></p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 footer-links">
+                        <ul>
+                            <li><a asp-action="Index" asp-controller="Home">Home</a></li>
+                            <li><a asp-action="AboutUs" asp-controller="Home">About us</a></li>
+                            <li><a asp-action="Index" asp-controller="Home">Places</a></li>
+
+
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-2 col-md-3 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li><a asp-action="Header_Museums" asp-controller="Home">Musuems</a></li>
+                            <li><a asp-action="Header_Hotels" asp-controller="Home">Hotels</a></li>
+
+
+                        </ul>
+                    </div>
+
+                    @*  <div class="col-lg-2 col-md-3 footer-links">
+                    <h4>Hic solutasetp</h4>
+                    <ul>
+                    <li><a href="#">Molestiae accusamus iure</a></li>
+                    <li><a href="#">Excepturi dignissimos</a></li>
+                    <li><a href="#">Suscipit distinctio</a></li>
+                    <li><a href="#">Dilecta</a></li>
+                    <li><a href="#">Sit quas consectetur</a></li>
+                    </ul>
+                    </div> *@
+
+                    @*  <div class="col-lg-2 col-md-3 footer-links">
+                    <h4>Nobis illum</h4>
+                    <ul>
+                    <li><a href="#">Ipsam</a></li>
+                    <li><a href="#">Laudantium dolorum</a></li>
+                    <li><a href="#">Dinera</a></li>
+                    <li><a href="#">Trodelas</a></li>
+                    <li><a href="#">Flexo</a></li>
+                    </ul>
+                    </div> *@
+
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright text-center">
+            <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
+
+                <div class="d-flex flex-column align-items-center align-items-lg-start">
+                    <div>
+                        © Copyright <strong><span>PharaoGo</span></strong>. All Rights Reserved
+                    </div>
+
+                </div>
+
+                <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
+                    <a href="https://github.com/MohamedRamadan32325/DepiProjectFInal.git"><i class="bi bi-github"></i></a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

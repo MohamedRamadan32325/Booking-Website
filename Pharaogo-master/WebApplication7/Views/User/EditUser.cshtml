@@ -1,0 +1,89 @@
+﻿@{
+    string h = ViewBag.IDDD;
+}
+@model WebApplication7.ViewModels.RegisterViewModel
+
+@{
+    Model.Id = h;
+}
+
+<link href="/css/UserEdit.css" rel="stylesheet" />
+<form asp-action="EditUser" enctype="multipart/form-data" method="post" class="">
+    <div class="profile-section">
+        <div class="profile-card">
+            <h3>@Model.UserName</h3>
+
+            <p>Account</p>
+            <ul class="profile-nav">
+            </ul>
+        </div>
+
+        <div class="form-section">
+            <div class="row">
+                <div class="col">
+                    <label asp-for="UserName" class="form-label">First Name</label>
+                    <input asp-for="UserName" class="form-control">
+                </div>
+                <div class="col">
+                    <label asp-for="LastName" class="form-label">Last Name</label>
+                    <input asp-for="LastName" class="form-control">
+                </div>
+            </div>
+
+            <h5>Contact Details</h5>
+            <div class="row">
+                <div class="col">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" readonly>
+                </div>
+                <div class="col">
+                    <label asp-for="MobilePhone" class="form-label">Mobile Phone</label>
+                    <input asp-for="MobilePhone" class="form-control">
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary save-btn">Save</button>
+        <a href="/User/Delete" class="btn btn-primary save-btn"onclick="AddData()">
+           Delete Your Account
+        </a>
+        <a href="#" class="btn btn-primary save-btn">
+            My Booking List
+        </a>
+    </div>
+   
+    
+</form>
+
+
+
+
+
+<script>
+    const imageInput = document.getElementById("imageInput");
+    const selectedImage = document.getElementById("selectedImage");
+
+    imageInput.addEventListener("change", () => {
+        const file = imageInput.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                selectedImage.src = e.target.result;
+                selectedImage.style.display = "block";
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    if (selectedImage.src && selectedImage.src !== "#") {
+        selectedImage.style.display = "block";
+    }
+</script>
+
+
+
+

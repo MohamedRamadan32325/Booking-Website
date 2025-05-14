@@ -1,0 +1,57 @@
+﻿@model Promotion
+<link href="/css/PormotionIndex.css" rel="stylesheet" />
+<div class="container-fluid">
+    <div class="row">
+        <!-- Promotions List (moved to the left) -->
+        <div class="col-md-8">
+            <h2 class="mb-3">Promotions List</h2>
+            <div class="mb-4"></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Promotion Code</th>
+                        <th scope="col">Discount Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var promotion in ViewBag.Promotions)
+                    {
+                        <tr>
+                            <td scope="row">@promotion.promotion_Id</td>
+                            <td>@promotion.promotion_Code</td>
+                            <td>@promotion.Discount_Amount</td>
+                            <td>
+                                <a asp-action="Delete" asp-route-id="@promotion.promotion_Id" class="link link-danger btn-sm"><img src="/Images/trash.png" style="width:20px" /></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add New Promotion Card (moved to the right) -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Add New Promotion</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Add" method="post">
+                        <div class="form-group">
+                            <label asp-for="promotion_Code" class="control-label"></label>
+                            <input asp-for="promotion_Code" class="form-control" placeholder="Enter promotion code" />
+                            <span asp-validation-for="promotion_Code" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Discount_Amount" class="control-label"></label>
+                            <input asp-for="Discount_Amount" class="form-control" type="number" placeholder="Enter discount amount" />
+                            <span asp-validation-for="Discount_Amount" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-Primary">Add Promotion</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

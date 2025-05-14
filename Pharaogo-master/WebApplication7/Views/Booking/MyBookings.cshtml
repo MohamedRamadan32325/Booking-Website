@@ -1,0 +1,68 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<WebApplication7.Models.Booking>
+
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<h2>My Bookings</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>Place</th>
+            <th>Number of Days</th>
+            <th>Number of Rooms</th> <!-- Only for hotel bookings -->
+            <th>Number of Tickets</th> <!-- Only for museum bookings -->
+            <th>Total Amount</th>
+            <th>Payment Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@booking.booking_Id</td>
+                <td>@booking.place?.Place_Name</td>
+                <td>@booking.total_Dayes</td>
+
+                <!-- Conditionally display NumberOfRooms or NumberOfTickets -->
+                <td>
+                    @if (booking.place?.Place_Type == "Hotel")
+                    {
+                        @* Fetch the number of rooms if this is a hotel booking *@
+                        @* Adjust based on how you save this in the database *@
+                        @Model.FirstOrDefault(b => b.booking_Id == booking.booking_Id)?.place.Place_Price  <!-- Placeholder for NumberOfRooms -->
+                    }
+                    else
+                    {
+                        <em>N/A</em>
+                    }
+                </td>
+
+                <td>
+                    @if (booking.place?.Place_Type == "Museum")
+                    {
+                        @* Fetch the number of tickets if this is a museum booking *@
+                        @* Adjust based on how you save this in the database *@
+                        @Model.FirstOrDefault(b => b.booking_Id == booking.booking_Id)?.place.Place_Price <!-- Placeholder for NumberOfTickets -->
+                    }
+                    else
+                    {
+                        <em>N/A</em>
+                    }
+                </td>
+
+                <td>@booking.total_amount.ToString("C")</td>
+                <td>@(booking.payment_state == true ? "Paid" : "Pending")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "Booking")" class="btn btn-primary">Create New Booking</a>

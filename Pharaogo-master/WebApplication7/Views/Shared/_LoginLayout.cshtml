@@ -1,0 +1,65 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PharaoGo</title>
+    <link href="/assets/img/LOGO.png" rel="icon">
+    <link href="/assets/img/LOGO.png" rel="apple-touch-icon">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplicationTest1.styles.css" asp-append-version="true" />
+    <style>
+        /* Ensure the video covers the entire background */
+        .video-background {
+            position: fixed; /* Fix to the viewport */
+            top: 0;
+            left: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            object-fit: cover; /* Maintain aspect ratio while covering */
+            z-index: -1; /* Send it behind other content */
+        }
+
+        /* Additional styles to ensure body and html take full height */
+        html, body {
+            height: 100%; /* Make sure the body and html are full height */
+            margin: 0; /* Remove default margins */
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        /* Optional: If you want to ensure that content in the body is readable */
+        .content {
+            position: relative; /* Create a stacking context for body content */
+            z-index: 1; /* Make sure it's above the video */
+            padding: 20px; /* Add some padding */
+            color: white; /* Change text color for readability, if needed */
+        }
+    </style>
+</head>
+<body>
+    <header>
+    </header>
+    <video autoplay muted loop class="video-background">
+        <source src="/videos/Let s Go - Egypt A Beautiful Destinations Original.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - WebApplicationTest1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
