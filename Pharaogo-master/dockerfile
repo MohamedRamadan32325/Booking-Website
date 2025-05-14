@@ -1,0 +1,29 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+WORKDIR /src
+
+COPY ["WebApplication7/WebApplication7.csproj", "WebApplication7/"]
+RUN dotnet restore "WebApplication7/WebApplication7.csproj"
+
+COPY . .
+WORKDIR "/src/WebApplication7"
+RUN dotnet publish -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS runtime
+WORKDIR /app
+
+
+RUN apk add --no-cache icu-libs netcat-openbsd
+
+USER root
+RUN dotnet tool install --global dotnet-ef 
+ENV PATH="${PATH}:/root/.dotnet/tools"
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+COPY --from=build /app/publish .
+
+EXPOSE 80
+ENV ASPNETCORE_URLS=http://+:80
+COPY docker-entrypoint.sh .
+
+ENTRYPOINT ["./docker-entrypoint.sh" ]

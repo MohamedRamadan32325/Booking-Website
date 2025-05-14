@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication7.Data;
 using WebApplication7.Models;
 using WebApplication7.Repositry;
 using WebApplication7.Repositry.IRepositry;
 using WebApplication7.Helper;
+using Serilog;
 
 namespace WebApplication7
 {
@@ -13,13 +14,29 @@ namespace WebApplication7
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-           
+
             // Add services to the container
             builder.Services.AddControllersWithViews();
-            
+
             // Configure database
-            builder.Services.AddDbContext<DepiContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DepiConnection")));
+            for (int i = 0; i < 10; i++)
+            {
+                try
+                {
+
+                    builder.Services.AddDbContext<DepiContext>(options =>
+                        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                    Console.WriteLine("✅ Connected to SQL Server!");
+                    break;
+                }
+                catch
+                {
+                    Console.WriteLine($"⏳ Retry {i + 1}/{10} – waiting for SQL Server...");
+
+                    Thread.Sleep(TimeSpan.FromSeconds(5));
+                }
+
+            }
 
             // Configure identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => 
@@ -44,7 +61,23 @@ namespace WebApplication7
             builder.Services.AddScoped<ISearch, Search_Repo>();
 
             var app = builder.Build();
+            using (var migrationScope = app.Services.CreateScope())
+            {
+                var services = migrationScope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<DepiContext>();
 
+                    // APPLY MIGRATIONS (no EnsureCreated)
+                    context.Database.Migrate();
+                    Log.Information("Database migrated successfully at startup");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "An error occurred while migrating the database");
+                    throw;
+                }
+            }
             // Configure the HTTP request pipeline
             if (!app.Environment.IsDevelopment())
             {

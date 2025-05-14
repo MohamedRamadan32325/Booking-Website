@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mohamedramadan23/booking-website:1.0.1   
+    depends_on:
+      - db
+    ports:
+      - '5000:80'
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_RUNNING_IN_CONTAINER=true
+    env_file:
+      - .env                                 
+    networks:
+      - pharaogo-net
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: pharaogo_db
+    ports:
+      - '1433:1433'
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/opt/mssql
+    networks:
+      - pharaogo-net
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $${MSSQL_SA_PASSWORD} -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  pharaogo-net:
+    driver: bridge
+
+volumes:
+  db_data:
