@@ -1,62 +1,62 @@
-﻿using WebApplication7.Models;
+﻿using AutoMapper;
+using WebApplication7.Data;
+using WebApplication7.Models;
 using WebApplication7.Repositry.IRepositry;
 using WebApplication7.ViewModels;
 
-public class User_Repo : IUser
+namespace WebApplication7.Repositry
 {
-    private readonly DepiContext dbContext;
-
-    public User_Repo(DepiContext context)
+    public class User_Repo : IUser
     {
-        dbContext = context;
-    }
+        private readonly DepiContext _dbContext;
+        private readonly IMapper _mapper;
 
-    public string GetUser(string id)
-    {
-        var user=dbContext.Users.Find(id);
-        if (user != null)
+        public User_Repo(DepiContext context, IMapper mapper)
         {
-            return user.UserName;
+            _dbContext = context;
+            _mapper = mapper;
         }
-        else { return "UnKnown"; }
-    }
-    public RegisterViewModel Update(string id)
-    {
-        User ss = dbContext.User.FirstOrDefault(x => x.Id == id);
-        RegisterViewModel registerSeekr = new RegisterViewModel
-        {
-            UserName = ss.UserName,
-            Email = ss.Email,
-            LastName = ss.LastName,
-            MobilePhone = ss.PhoneNumber
-        };
-        return registerSeekr;
-    }
 
-    public void UpdateUser(RegisterViewModel s)
-    {
-        User ss = dbContext.User.FirstOrDefault(x => x.Id == s.Id);
-        if (ss != null)
+        public string GetUser(string id)
         {
-            ss.UserName = s.UserName;
-            ss.LastName = s.LastName;
-            ss.Email = s.Email;
-            ss.PhoneNumber = s.MobilePhone;
-
-            dbContext.Update(ss);
-            dbContext.SaveChanges();
+            var user = _dbContext.Users.Find(id);
+            return user != null ? user.UserName : "Unknown";
         }
-    }
-
-    public bool DeleteUser(string id)
-    {
-        User usertodelete = dbContext.User.FirstOrDefault(x => x.Id == id);
-        if (usertodelete != null)
+        
+        public RegisterViewModel Update(string id)
         {
-            dbContext.User.Remove(usertodelete);
-            dbContext.SaveChanges();
-            return true;
+            User user = _dbContext.User.FirstOrDefault(x => x.Id == id);
+            
+            if (user == null)
+            {
+                return null;
+            }
+            
+            return _mapper.Map<RegisterViewModel>(user);
         }
-        return false;
+
+        public void UpdateUser(RegisterViewModel model)
+        {
+            User user = _dbContext.User.FirstOrDefault(x => x.Id == model.Id);
+            if (user != null)
+            {
+                _mapper.Map(model, user);
+
+                _dbContext.Update(user);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        public bool DeleteUser(string id)
+        {
+            User userToDelete = _dbContext.User.FirstOrDefault(x => x.Id == id);
+            if (userToDelete != null)
+            {
+                _dbContext.User.Remove(userToDelete);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            return false;
+        }
     }
 }

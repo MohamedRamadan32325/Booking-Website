@@ -1,0 +1,50 @@
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h1>Role Management</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<p>
+    <a asp-action="New" class="btn btn-primary">Create New Role</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Role Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@role.Id" class="btn btn-sm btn-info">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@role.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">Back to Admin Panel</a>
+</div> 

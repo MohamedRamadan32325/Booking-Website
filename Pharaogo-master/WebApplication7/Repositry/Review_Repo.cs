@@ -1,59 +1,80 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WebApplication7.Models;
+using WebApplication7.Data;
 using WebApplication7.Repositry.IRepositry;
 using WebApplication7.ViewModels;
+using AutoMapper;
+
 namespace WebApplication7.Repositry
 {
     public class Review_Repo : IReview
     {
-        private readonly DepiContext dbContext;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly DepiContext _dbContext;
+        private readonly IMapper _mapper;
 
-
-        public Review_Repo(DepiContext context) 
+        public Review_Repo(DepiContext context, IMapper mapper) 
         {
-            dbContext = context;
+            _dbContext = context;
+            _mapper = mapper;
         }
+
         public void Delete(int id)
         {
-            var review = dbContext.Review.Find(id);
+            var review = _dbContext.Review.Find(id);
             if (review != null)
             {
-                dbContext.Review.Remove(review);
+                _dbContext.Review.Remove(review);
                 Save();
             }
         }
-        public void Add(string id ,int PlaceId, string msg,string username)
-        {
-            Review review = new Review();
 
-            review.User_ID = id;
-            review.Place_Id = PlaceId;
-            review.Comment = msg;
-            review.UserName = username;
-            var msgg = dbContext.Review.Add(review);
+        public void Add(string id, int PlaceId, string msg, string username, int rating)
+        {
+            Review review = new Review
+            {
+                User_ID = id,
+                Place_Id = PlaceId,
+                Comment = msg,
+                UserName = username,
+                Rating = rating,
+                Date = DateTime.Now
+            };
+            
+            _dbContext.Review.Add(review);
             Save();
         }
+
         public PlaceViewModel Getinfo(int id) 
         {
-            var relatedPlaces = dbContext.Places.Where(p => p.Place_Id != id).Take(4).ToList();
-            var specificPlace = dbContext.Places.FirstOrDefault(x => x.Place_Id == id);
-            var reviews = dbContext.Review.Where(p => p.Place_Id == id).ToList();
-           
+            // Get the specific place
+            var specificPlace = _dbContext.Places.FirstOrDefault(x => x.Place_Id == id);
             
+            // Get related places
+            var relatedPlaces = _dbContext.Places
+                .Where(p => p.Place_Id != id)
+                .Take(4)
+                .ToList();
+            
+            // Get reviews for the place
+            var reviews = _dbContext.Review
+                .Where(p => p.Place_Id == id)
+                .ToList();
+            
+            // Create view model
             var viewModel = new PlaceViewModel
             {
-                
                 SpecificPlace = specificPlace,
                 RelatedPlaces = relatedPlaces,
                 review = reviews
             };
+            
             return viewModel;
         }
+
         public void Save()
         {
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
         }
     }
 }

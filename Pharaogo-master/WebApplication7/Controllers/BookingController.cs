@@ -8,137 +8,106 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.VisualBasic;
 using Microsoft.AspNetCore.Identity;
 using WebApplication7.Repositry;
+using AutoMapper;
+using WebApplication7.Helper;
 
-public class BookingController : Controller
+namespace WebApplication7.Controllers
 {
-    private readonly IPlace _placeRepository;
-    private readonly IBooking _bookingRepository;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> signInManager;
-    private readonly IWebHostEnvironment _webHostEnvironment;
-
-
-
-    public BookingController(IPlace placeRepository,IBooking bookingRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> _signInManager, IWebHostEnvironment webHostEnvironment)
-
-
-
+    public class BookingController : Controller
     {
-        _userManager = userManager;
-        signInManager = _signInManager;
-        _webHostEnvironment = webHostEnvironment;
-        _placeRepository = placeRepository;
-        _bookingRepository = bookingRepository;
+        private readonly IPlace _placeRepository;
+        private readonly IBooking _bookingRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IMapper _mapper;
+        private readonly MapperHelper _mapperHelper;
 
-    }
-
-    [HttpGet]
-    public IActionResult Create(int id)
-    {
-        var bookingViewModel = _bookingRepository.Create(id);
-
-        if (bookingViewModel == null)
+        public BookingController(
+            IPlace placeRepository,
+            IBooking bookingRepository, 
+            UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager, 
+            IWebHostEnvironment webHostEnvironment,
+            IMapper mapper,
+            MapperHelper mapperHelper)
         {
-            return NotFound("Place not found");
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _webHostEnvironment = webHostEnvironment;
+            _placeRepository = placeRepository;
+            _bookingRepository = bookingRepository;
+            _mapper = mapper;
+            _mapperHelper = mapperHelper;
         }
 
-        return View(bookingViewModel);
-    }
-
-    [HttpPost]
-    public IActionResult Create(BookingViewModel bookingViewModel,string promotioncode)
-    {
-        if (ModelState.IsValid)
+        [HttpGet]
+        public IActionResult Create(int id)
         {
-            return RedirectToAction("Payment", new { id = bookingViewModel.PlaceID, totalAmount = bookingViewModel.TotalAmount });
-        }
+            var bookingViewModel = _bookingRepository.Create(id);
 
-        return View(bookingViewModel);
-    }
-
-   
-[HttpGet]
-    public IActionResult Payment( int numberofguests, BookingViewModel? model,int id)
-    {
-        if (!User.Identity.IsAuthenticated)
-        {
-            TempData["ErrorMessage"] = "Please Login First";
-            return RedirectToAction("Login", "Account");
-        }
-
-        var paymentViewModel = _bookingRepository.Payment(id,numberofguests,model.dayes, model.PromotionCode);
-        var placeviewmodel = _placeRepository.Get(id);
-
-        if (placeviewmodel == null)
-        {
-            return NotFound("Place not found");
-        }
-        if (paymentViewModel == null)
-        {
-            ModelState.AddModelError("PromotionCode", "Promotion Code is not valid ");
-        }
-
-        if (ModelState.IsValid)
-        {
-
-            if (placeviewmodel.SpecificPlace.Place_Type != "Hotel")
+            if (bookingViewModel == null)
             {
-
-
-                return View(paymentViewModel);
+                return NotFound("Place not found");
             }
 
-
-            // Ensure CheckOutDate is after CheckInDate
-            if (model.CheckOutDate >= model.CheckInDate)
-            {
-                // Calculate the difference in days
-                TimeSpan difference = model.CheckOutDate - model.CheckInDate;
-                model.numberofdayes = difference.Days;
-
-                // You can now use model.NumberOfDays or pass it to a view
-                if (model.numberofdayes != model.dayes)
-                {
-                    ModelState.AddModelError("dayes", "Number of dayes convenient ");
-
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("CheckOutDate", "CheckOutDate must be after CheckInDate.");
-                ModelState.AddModelError("CheckInOutDate", "CheckOutDate must be after CheckInDate.");
-            }
-
+            return View(bookingViewModel);
         }
-        if (!ModelState.IsValid)
+
+        [HttpPost]
+        public IActionResult Create(BookingViewModel bookingViewModel, string promotionCode)
         {
-            BookingViewModel bookingViewModel = new BookingViewModel
+            if (ModelState.IsValid)
             {
-                PlaceID = placeviewmodel.SpecificPlace.Place_Id,
-                PlaceName = placeviewmodel.SpecificPlace.Place_Name,
-                dbimage = placeviewmodel.SpecificPlace.dbimage,
-                Description = placeviewmodel.SpecificPlace.Description,
-                TotalAmount = placeviewmodel.SpecificPlace.Place_Price,
-                PlaceType = placeviewmodel.SpecificPlace.Place_Type,
-            };
+                return RedirectToAction("Payment", new { 
+                    id = bookingViewModel.PlaceID, 
+                    totalAmount = bookingViewModel.TotalAmount,
+                    promotionCode = promotionCode
+                });
+            }
+
+            return View(bookingViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Payment(int id, decimal totalAmount, string promotionCode, int numberOfGuests = 1, int days = 1)
+        {
+            var paymentViewModel = _bookingRepository.Payment(id, numberOfGuests, days, promotionCode);
             
-            return View("Create", bookingViewModel);
+            if (paymentViewModel == null)
+            {
+                return NotFound("Invalid promotion code or place not found");
+            }
+            
+            return View(paymentViewModel);
         }
 
-        return View(paymentViewModel);
-    }
+        [HttpPost]
+        public IActionResult Payment(PaymentViewModel paymentViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Confirmation");
+            }
+            
+            return View(paymentViewModel);
+        }
 
+        public IActionResult Confirmation()
+        {
+            return View();
+        }
 
-    [HttpPost]
-    public IActionResult PaymentConfirmed(int TotalAmountAfterDiss)
-    {
-        return View("Success", TotalAmountAfterDiss);
-    }
-    [HttpPost]
-    public IActionResult CalculateDays(BookingViewModel model)
-    {
-       
-        return View(model);
-    }
+        [HttpPost]
+        public IActionResult PaymentConfirmed(int TotalAmountAfterDiss)
+        {
+            return View("Success", TotalAmountAfterDiss);
+        }
 
+        [HttpPost]
+        public IActionResult CalculateDays(BookingViewModel model)
+        {
+            return View(model);
+        }
+    }
 }

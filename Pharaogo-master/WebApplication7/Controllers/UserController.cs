@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
-using System.Security.Claims;
+using System.Threading.Tasks;
 using WebApplication7.Models;
-using WebApplication7.Repositry;
 using WebApplication7.ViewModels;
 
 namespace WebApplication7.Controllers
@@ -15,54 +10,80 @@ namespace WebApplication7.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly User_Repo user_repo;
-        private readonly DepiContext dbContext;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        
-        
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public UserController(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager, IWebHostEnvironment webHostEnvironment, DepiContext context)
+        public UserController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
-            userManager = _userManager;
-            signInManager = _signInManager;
-            _webHostEnvironment = webHostEnvironment;
-            dbContext = context;
-            user_repo = new User_Repo(context);
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        public IActionResult Edit()
-        {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return RedirectToAction("EditUser", new { id = id });
-        }
         [HttpGet]
+        public async Task<IActionResult> Edit()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
-        public IActionResult EditUser(string id)
-        {
-            RegisterViewModel rr = user_repo.Update(id);
-            return View(rr);
+            var viewModel = new RegisterViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email
+            };
+
+            return View(viewModel);
         }
+
         [HttpPost]
-        public IActionResult EditUser(RegisterViewModel s)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(RegisterViewModel model)
         {
-            user_repo.UpdateUser(s);
-            return View(s);
-        }
-        public IActionResult Delete()
-        {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return RedirectToAction("Deleteuser", new { id = id });
-        }
-        public IActionResult DeleteUser(string id)
-        {
-            
-            user_repo.DeleteUser(id);
-            signInManager.SignOutAsync();
-          
-            TempData["SuccessMessage"] = "The user has been successfully deleted.";
-          
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var email = await _userManager.GetEmailAsync(user);
+            if (model.Email != email)
+            {
+                var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
+                if (!setEmailResult.Succeeded)
+                {
+                    foreach (var error in setEmailResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+            }
+
+            var username = await _userManager.GetUserNameAsync(user);
+            if (model.UserName != username)
+            {
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, model.UserName);
+                if (!setUserNameResult.Succeeded)
+                {
+                    foreach (var error in setUserNameResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+            }
+
+            TempData["SuccessMessage"] = "Your profile has been updated";
             return RedirectToAction("Index", "Home");
         }
     }

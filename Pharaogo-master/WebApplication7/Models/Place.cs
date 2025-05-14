@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Intrinsics.Arm;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace WebApplication7.Models
 {
@@ -10,34 +9,22 @@ namespace WebApplication7.Models
         {
             dbimage = new List<byte[]>();
         }
-        [Key]
+        
         public int Place_Id { get; set; }
         public int cnt { get; set; } = 0;
         public int SumOfRates { get; set; } = 0;
-
-        [Required]
-        [Display(Name = "Place Name : ")]
-
         public string Place_Name { get; set; }
-        [Required]
-        [Display(Name = "Type :")]
         public string Place_Type { get; set; }
-        [Display(Name = "City :")]
         public string Place_City { get; set; }
-        [Required]
-        [Display(Name = "Price :")]
-
         public int Place_Price { get; set; }
-        [Display(Name = "Rating :")]
-
         public string Place_Rating { get; set; } = "unrated";
         public string? Description { get; set; }
-        [NotMapped]
+        
+        // Not mapped to database
         public List<IFormFile>? clientFile { get; set; }
-
         public List<byte[]>? dbimage { get; set; }
-
-        [NotMapped]
+        
+        // Not mapped to database
         public List<string>? imageSrc
         {
             get

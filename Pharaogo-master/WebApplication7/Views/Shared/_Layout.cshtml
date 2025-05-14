@@ -97,41 +97,69 @@
                     </li>
 
                     <li><a asp-action="AboutUs" asp-controller="Home">About Us</a></li>
-                    <li class="dropdown">
-                        @if (User.Identity.IsAuthenticated)
-                        {
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="dropdown">
                             <a href="#" class="settings-icon" onclick="toggleDropdown(event)">
                                 <img src="~/Images/settings.png" width="20px" />
                                 <i class="bi bi-chevron-down toggle-dropdown"></i>
                             </a>
                             <ul>
-                                <li><a href="/User/Edit">Profile</a></li>
-                                @if (User.IsInRole("Visitor"))
-                                {
-                                    <li><a href="/Home/WishList?id=@User.FindFirstValue(ClaimTypes.NameIdentifier)">WishList</a></li>
-                                }
                                 @if (User.IsInRole("Admin"))
                                 {
-                                    <li><a href="/Admin/Index">Settings</a></li>
+                                    <li><a asp-controller="Admin" asp-action="Profile">Profile</a></li>
+                                    <li><a asp-controller="Admin" asp-action="Index">Admin Dashboard</a></li>
+                                    <li><a asp-controller="Role" asp-action="Index">Manage Roles</a></li>
                                 }
-                                <li><a href="/Account/Logout">Logout</a></li>
+                                else
+                                {
+                                    <li><a asp-controller="User" asp-action="Edit">Profile</a></li>
+                                    <li><a asp-controller="Home" asp-action="WishList" asp-route-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)">WishList</a></li>
+                                }
+                                <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
                             </ul>
-                        }
-                    </li>
-
-
-                    </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a asp-controller="Account" asp-action="Login" class="login-btn">Log in</a></li>
+                        <li><a asp-controller="Account" asp-action="Register" class="signup-btn">Sign up</a></li>
+                    }
+                </ul>
             </nav>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
            
+            <script>
+                function toggleDropdown(event) {
+                    event.preventDefault();
+                    const dropdownParent = event.currentTarget.parentNode;
+                    const dropdownMenu = dropdownParent.querySelector('ul');
+                    
+                    if (dropdownMenu.style.display === 'block') {
+                        dropdownMenu.style.display = 'none';
+                    } else {
+                        dropdownMenu.style.display = 'block';
+                    }
+                }
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    const dropdowns = document.querySelectorAll('.dropdown ul');
+                    dropdowns.forEach(function(dropdown) {
+                        if (!event.target.closest('.dropdown')) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+                });
+            </script>
 
-
-
-            <form class="d-flex" asp-controller="Search" asp-action="Index" method="get">
-                <input class="form-control mr-2" type="search" name="MaxPrice" placeholder="Enter max price" aria-label="Search">
-                <input class="form-control mr-2" type="search" name="searchQuery" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline" name="search_icon" type="submit" >Search</button>
-            </form>
+            <div class="search-wrapper">
+                <form class="d-flex" asp-controller="Search" asp-action="Index" method="get">
+                    <input class="form-control mr-2" type="search" name="MaxPrice" placeholder="Enter max price" aria-label="Search">
+                    <input class="form-control mr-2" type="search" name="searchQuery" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline" name="search_icon" type="submit">Search</button>
+                </form>
+            </div>
             <style>
                 .btn-outline {
                     color: #a59056;
@@ -144,6 +172,37 @@
                         border-color: #a59056;
                         background-color: #a59056;
                     }
+                
+                .search-wrapper {
+                    display: flex;
+                    align-items: center;
+                }
+                
+                .login-btn, .signup-btn {
+                    display: inline-block;
+                    padding: 8px 15px;
+                    margin-left: 5px;
+                }
+                
+                .signup-btn {
+                    background-color: #a59056;
+                    color: white !important;
+                    border-radius: 5px;
+                }
+                
+                .signup-btn:hover {
+                    background-color: #8d7a46;
+                }
+                
+                .login-btn:hover {
+                    color: #a59056 !important;
+                }
+
+                @@media (max-width: 991px) {
+                    .search-wrapper {
+                        display: none;
+                    }
+                }
             </style>
            
         </div>

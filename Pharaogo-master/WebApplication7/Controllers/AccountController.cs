@@ -11,70 +11,88 @@ namespace WebApplication7.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-
-
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> _signInManager, IWebHostEnvironment webHostEnvironment)
+        public AccountController(UserManager<ApplicationUser> userManager, 
+                               SignInManager<ApplicationUser> signInManager, 
+                               RoleManager<IdentityRole> roleManager,
+                               IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
-            signInManager = _signInManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
             _webHostEnvironment = webHostEnvironment;
-
-
         }
+
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel Userrvm)
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
             if (ModelState.IsValid)
             {
                 // Check if the email already exists
-                var existingUserByEmail = await _userManager.FindByEmailAsync(Userrvm.Email);
+                var existingUserByEmail = await _userManager.FindByEmailAsync(registerViewModel.Email);
                 if (existingUserByEmail != null)
                 {
                     ModelState.AddModelError("Email", "Email is already taken.");
-                    return View(Userrvm);
+                    return View(registerViewModel);
                 }
 
                 // Check if the username already exists
-                var existingUserByUsername = await _userManager.FindByNameAsync(Userrvm.UserName);
+                var existingUserByUsername = await _userManager.FindByNameAsync(registerViewModel.UserName);
                 if (existingUserByUsername != null)
                 {
                     ModelState.AddModelError("UserName", "Username is already taken.");
-                    return View(Userrvm);
+                    return View(registerViewModel);
                 }
 
-                // Create a new user
-                User userModel = new User
+                // Create a new ApplicationUser
+                var newUser = new ApplicationUser
                 {
-                    UserName = Userrvm.UserName,
-                    Email = Userrvm.Email
+                    UserName = registerViewModel.UserName,
+                    Email = registerViewModel.Email,
+                    EmailConfirmed = true
                 };
 
                 // Create the user in the system
-                IdentityResult result = await _userManager.CreateAsync(userModel, Userrvm.Password);
+                IdentityResult result = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
                 if (result.Succeeded)
                 {
-                    // Assign role based on email
-                    if (Userrvm.Email == "admiin@gmail.com")
+                    // Check if the admin role exists
+                    if (!await _roleManager.RoleExistsAsync("Admin"))
                     {
-                        await _userManager.AddToRoleAsync(userModel, "Admin");
+                        await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                    }
+
+                    // Check if the visitor role exists
+                    if (!await _roleManager.RoleExistsAsync("Visitor"))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("Visitor"));
+                    }
+
+                    // Assign role based on email
+                    var adminEmails = new[] { "admin@pharaogo.com", "admiin@gmail.com" };
+                    if (adminEmails.Contains(registerViewModel.Email.ToLower()))
+                    {
+                        await _userManager.AddToRoleAsync(newUser, "Admin");
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(userModel, "Visitor");
+                        await _userManager.AddToRoleAsync(newUser, "Visitor");
                     }
 
                     // Sign the user in
-                    await signInManager.SignInAsync(userModel, isPersistent: false);
-
+                    await _signInManager.SignInAsync(newUser, isPersistent: false);
+                    
+                    TempData["SuccessMessage"] = "Registration successful!";
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -88,33 +106,34 @@ namespace WebApplication7.Controllers
             }
 
             // If validation fails, return the view with the model data
-            return View(Userrvm);
+            return View(registerViewModel);
         }
 
         [HttpGet]
-
         public IActionResult Login()
         {
-
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
                 // Find user by email
-                ApplicationUser user = await _userManager.FindByEmailAsync(loginViewModel.Email);
+                var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
 
                 if (user != null)
                 {
                     // Check if the password is correct
-                    bool found = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
-                    if (found)
-                    {
-                        // Sign in the user using SignInManager
-                        await signInManager.SignInAsync(user, loginViewModel.RememberMe);
+                    var result = await _signInManager.PasswordSignInAsync(
+                        user, 
+                        loginViewModel.Password, 
+                        loginViewModel.RememberMe, 
+                        lockoutOnFailure: false);
 
+                    if (result.Succeeded)
+                    {
                         // Redirect to the home page after login
                         return RedirectToAction("Index", "Home");
                     }
@@ -137,10 +156,27 @@ namespace WebApplication7.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
 
+            var viewModel = new RegisterViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email
+            };
+
+            return View(viewModel);
+        }
     }
 }

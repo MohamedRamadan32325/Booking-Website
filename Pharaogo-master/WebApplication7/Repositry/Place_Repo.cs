@@ -1,22 +1,33 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication7.Models;
+using WebApplication7.Data;
 using WebApplication7.Repositry.IRepositry;
 using WebApplication7.ViewModels;
+using AutoMapper;
+
 namespace WebApplication7.Repositry
 {
     public class Place_Repo : IPlace
     {
-        DepiContext _context;
-        public Place_Repo(DepiContext _context)
+        private readonly DepiContext _context;
+        private readonly IMapper _mapper;
+
+        public Place_Repo(DepiContext context, IMapper mapper)
         {
-            this._context = _context;
+            _context = context;
+            _mapper = mapper;
         }
+
         public PlaceViewModel GetAll()
         {
-            var ans = new PlaceViewModel();
-            ans.RelatedPlaces = _context.Places.ToList();
-            return ans;
+            var places = _context.Places.ToList();
+            var viewModel = new PlaceViewModel
+            {
+                RelatedPlaces = places
+            };
+            return viewModel;
         }
+
         public List<Place> GetPlaces()
         {
             return _context.Places.ToList();
@@ -24,36 +35,46 @@ namespace WebApplication7.Repositry
 
         public PlaceViewModel GetAllMuseum()
         {
-            var ans = new PlaceViewModel();
-            ans.RelatedPlaces = _context.Places.Where(x => x.Place_Type == "Museum").ToList();
-            return ans;
+            var museums = _context.Places.Where(x => x.Place_Type == "Museum").ToList();
+            var viewModel = new PlaceViewModel
+            {
+                RelatedPlaces = museums
+            };
+            return viewModel;
         }
+
         public PlaceViewModel GetAllHotels()
         {
-            var ans = new PlaceViewModel();
-            ans.RelatedPlaces = _context.Places.Where(x => x.Place_Type == "Hotel").ToList();
-            return ans;
+            var hotels = _context.Places.Where(x => x.Place_Type == "Hotel").ToList();
+            var viewModel = new PlaceViewModel
+            {
+                RelatedPlaces = hotels
+            };
+            return viewModel;
         }
+
         public Place GetById(int id)
         {
             return _context.Places.FirstOrDefault(x => x.Place_Id == id);
         }
+
         public Place GetByName(string Name)
         {
             return _context.Places.FirstOrDefault(x => x.Place_Name == Name);
         }
 
-
         public PlaceViewModel Get(int id)
         {
             var relatedPlaces = _context.Places.Where(p => p.Place_Id != id).Take(8).ToList();
             var specificPlace = _context.Places.FirstOrDefault(x => x.Place_Id == id);
+            
+            // Create view model using AutoMapper for specific place
             var viewModel = new PlaceViewModel
             {
-
                 SpecificPlace = specificPlace,
                 RelatedPlaces = relatedPlaces
             };
+            
             return viewModel;
         }
 
@@ -73,31 +94,31 @@ namespace WebApplication7.Repositry
             _context.Places.Add(place);
             Save();
         }
+
         public void updaterate(Place place, int rating)
         {
-            decimal temp;
-            place.cnt = place.cnt + 1;
-            place.SumOfRates = place.SumOfRates + rating;
+            place.cnt += 1;
+            place.SumOfRates += rating;
             Save();
-            temp = place.SumOfRates / place.cnt;
+            
+            decimal temp = place.SumOfRates / place.cnt;
             place.Place_Rating = temp.ToString();
             Save();
         }
-        public void Edit(PlaceViewModel place)
+
+        public void Edit(PlaceViewModel placeViewModel)
         {
-            var existingPlace = _context.Places.Find(place.SpecificPlace.Place_Id);
+            var existingPlace = _context.Places.Find(placeViewModel.SpecificPlace.Place_Id);
             if (existingPlace != null)
             {
-                existingPlace.Place_Name = place.SpecificPlace.Place_Name;
-                existingPlace.Place_Type = place.SpecificPlace.Place_Type;
-                existingPlace.Place_City = place.SpecificPlace.Place_City;
-                existingPlace.Place_Price = place.SpecificPlace.Place_Price;
-                existingPlace.Place_Rating = place.SpecificPlace.Place_Rating;
-                existingPlace.Description = place.SpecificPlace.Description;
-                if (place.SpecificPlace.clientFile != null)
+                // Map properties using AutoMapper
+                _mapper.Map(placeViewModel.SpecificPlace, existingPlace);
+                
+                // Handle file uploads separately as they require special processing
+                if (placeViewModel.SpecificPlace.clientFile != null)
                 {
                     existingPlace.dbimage = new List<byte[]>();
-                    foreach (var file in place.SpecificPlace.clientFile)
+                    foreach (var file in placeViewModel.SpecificPlace.clientFile)
                     {
                         using (var stream = new MemoryStream())
                         {
@@ -106,10 +127,7 @@ namespace WebApplication7.Repositry
                         }
                     }
                 }
-                else
-                {
-                    place.SpecificPlace.dbimage = existingPlace.dbimage;
-                }
+                
                 Save();
             }
         }

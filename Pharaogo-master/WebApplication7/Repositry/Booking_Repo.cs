@@ -1,88 +1,98 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication7.Models;
+using WebApplication7.Data;
 using WebApplication7.Repositry.IRepositry;
 using WebApplication7.ViewModels;
+using AutoMapper;
+
 namespace WebApplication7.Repositry
 {
     public class Booking_Repo : IBooking
     {
-        private readonly DepiContext dbContext;
+        private readonly DepiContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public Booking_Repo(DepiContext context)
+        public Booking_Repo(DepiContext context, IMapper mapper)
         {
-            dbContext = context;
+            _dbContext = context;
+            _mapper = mapper;
         }
 
         public BookingViewModel Create(int id)
         {
-            BookingViewModel bookingViewModel = new BookingViewModel();
-            Place place = dbContext.Places.FirstOrDefault(x => x.Place_Id == id);
-
-            if (place == null)
-            {
-                return null; // Or throw an exception if preferred.
-            }
-
-            bookingViewModel.PlaceID = place.Place_Id;
-            bookingViewModel.PlaceName = place.Place_Name;
-            bookingViewModel.dbimage = place.dbimage;
-            bookingViewModel.Description = place.Description;
-            bookingViewModel.TotalAmount = place.Place_Price;
-            bookingViewModel.PlaceType = place.Place_Type;
-
-            return bookingViewModel;
-        }
-
-        public PaymentViewModel Payment(int id, int numberofguests, int dayes, string PromotionCode)
-        {
-            PaymentViewModel pp = new PaymentViewModel();
-            Place place = dbContext.Places.FirstOrDefault(x => x.Place_Id == id);
+            Place place = _dbContext.Places.FirstOrDefault(x => x.Place_Id == id);
 
             if (place == null)
             {
                 return null;
             }
-            pp.TotalAmountAfterDiss = place.Place_Price;
-            pp.TotalAmount = place.Place_Price;
 
+            // Create a booking with mapped place details
+            var booking = new Booking
+            {
+                Place_ID = place.Place_Id,
+                place = place
+            };
+
+            // Use AutoMapper to map the booking to BookingViewModel
+            var bookingViewModel = _mapper.Map<BookingViewModel>(booking);
+            bookingViewModel.TotalAmount = place.Place_Price;
+            
+            return bookingViewModel;
+        }
+
+        public PaymentViewModel Payment(int id, int numberofguests, int dayes, string PromotionCode)
+        {
+            Place place = _dbContext.Places.FirstOrDefault(x => x.Place_Id == id);
+
+            if (place == null)
+            {
+                return null;
+            }
+
+            // Create the payment model with basic data
+            var paymentViewModel = new PaymentViewModel
+            {
+                TotalAmountAfterDiss = place.Place_Price,
+                TotalAmount = place.Place_Price,
+                PaymentCode = GeneratePaymentCode(),
+                NumberOfGuests = numberofguests
+            };
+
+            // Apply promotion if provided
             if (!string.IsNullOrEmpty(PromotionCode))
             {
-                var promo = dbContext.Promotions.FirstOrDefault(x => x.promotion_Code == PromotionCode);
+                var promo = _dbContext.Promotions.FirstOrDefault(x => x.promotion_Code == PromotionCode);
 
                 if (promo != null)
                 {
-                    int temp = (promo.Discount_Amount * place.Place_Price) / 100;
-                    pp.TotalAmountAfterDiss = place.Place_Price-temp  ;
+                    int discount = (promo.Discount_Amount * place.Place_Price) / 100;
+                    paymentViewModel.TotalAmountAfterDiss = place.Place_Price - discount;
                 }
                 else
                 {
                     return null;
                 }
             }
-            pp.TotalAmountAfterDiss = pp.TotalAmountAfterDiss * numberofguests;
-            pp.TotalAmount=pp.TotalAmount* numberofguests;
-            pp.PaymentCode = GeneratePaymentCode(); 
-            pp.NumberOfGuests = numberofguests;
 
-           
+            // Multiply by number of guests
+            paymentViewModel.TotalAmountAfterDiss *= numberofguests;
+            paymentViewModel.TotalAmount *= numberofguests;
+
+            // Handle hotel bookings with days
             if (place.Place_Type == "Hotel")
             {
-                pp.TotalDayes = dayes;
-                pp.TotalAmountAfterDiss = pp.TotalAmountAfterDiss * dayes;
-                pp.TotalAmount = pp.TotalAmount * dayes;
+                paymentViewModel.TotalDayes = dayes;
+                paymentViewModel.TotalAmountAfterDiss *= dayes;
+                paymentViewModel.TotalAmount *= dayes;
             }
 
-            
-
-            if (string.IsNullOrEmpty(PromotionCode))
-                return pp;
-            return pp;
+            return paymentViewModel;
         }
+
         private string GeneratePaymentCode()
         {
-            
             return Guid.NewGuid().ToString();
         }
-
     }
 }

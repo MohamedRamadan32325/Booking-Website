@@ -1,30 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication7.Models;  // Assuming you're using Entity Framework
 using System.Linq;
+using WebApplication7.Data;
 using WebApplication7.Repositry.IRepositry;
-using Microsoft.IdentityModel.Tokens;
 
-public class SearchController : Controller
+namespace WebApplication7.Controllers
 {
-    private readonly DepiContext _context; // DbContext to interact with the database
-    ISearch _search;
-    public SearchController(DepiContext context, ISearch tt)
+    public class SearchController : Controller
     {
-        _context = context;
-        _search = tt;
-    }
-
-    [HttpGet]
-    public IActionResult Index(string searchQuery,double MaxPrice)
-    {
-        var results = _search.SearchPlaces(searchQuery,MaxPrice);
-
-        if (results == null || !results.Any())
+        private readonly ISearch _search;
+        
+        public SearchController(ISearch search)
         {
-            return View("NotFound");
+            _search = search;
         }
 
-        return View(results);
-    }
+        [HttpGet]
+        public IActionResult Index(string searchQuery, double MaxPrice)
+        {
+            var results = _search.SearchPlaces(searchQuery, MaxPrice);
 
+            if (results == null || !results.Any())
+            {
+                return View("NotFound");
+            }
+
+            return View(results);
+        }
+    }
 }

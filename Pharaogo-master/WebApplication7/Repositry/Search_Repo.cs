@@ -1,41 +1,60 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApplication7.Data;
 using WebApplication7.Models;
 using WebApplication7.Repositry.IRepositry;
+using AutoMapper;
 
 namespace WebApplication7.Repositry
 {
     public class Search_Repo : ISearch
     {
         private readonly DepiContext _context;
+        private readonly IMapper _mapper;
 
-        public Search_Repo(DepiContext context)
+        public Search_Repo(DepiContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public List<Place> SearchPlaces(string searchQuery,double MaxPrice)
+        public List<Place> SearchPlaces(string searchQuery, double maxPrice)
         {
-            if (string.IsNullOrEmpty(searchQuery) && MaxPrice == 0)
+            // Both parameters empty or zero - return empty list
+            if (string.IsNullOrEmpty(searchQuery) && maxPrice == 0)
             {
                 return new List<Place>();
             }
-            else if (string.IsNullOrEmpty(searchQuery) && MaxPrice > 0)
+            
+            // Only max price is provided - filter by price
+            else if (string.IsNullOrEmpty(searchQuery) && maxPrice > 0)
             {
-                return _context.Places.Where(x => x.Place_Price >= 0 && x.Place_Price <= MaxPrice).ToList();
+                var places = _context.Places
+                    .Where(x => x.Place_Price >= 0 && x.Place_Price <= maxPrice)
+                    .ToList();
+                
+                return places;
             }
-            else if (searchQuery!=null && MaxPrice == 0)
+            
+            // Only search query is provided - filter by name or city
+            else if (!string.IsNullOrEmpty(searchQuery) && maxPrice == 0)
             {
-                return _context.Places
-              .Where(x => x.Place_Name.Contains(searchQuery) || x.Place_City.Contains(searchQuery))
-              .ToList();
+                var places = _context.Places
+                    .Where(x => x.Place_Name.Contains(searchQuery) || x.Place_City.Contains(searchQuery))
+                    .ToList();
+                
+                return places;
             }
+            
+            // Both parameters provided - filter by name/city and price
             else 
             {
-                return _context.Places
-               .Where(x => x.Place_Name.Contains(searchQuery) || x.Place_City.Contains(searchQuery) && x.Place_Price >= 0 && x.Place_Price <= MaxPrice)
-               .ToList();
+                var places = _context.Places
+                    .Where(x => (x.Place_Name.Contains(searchQuery) || x.Place_City.Contains(searchQuery)) 
+                           && x.Place_Price >= 0 && x.Place_Price <= maxPrice)
+                    .ToList();
+                
+                return places;
             }
-
         }
     }
 }

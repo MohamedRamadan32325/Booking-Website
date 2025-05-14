@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using WebApplication7.Models;
 using WebApplication7.Repositry.IRepositry;
 using WebApplication7.ViewModels;
+using AutoMapper;
+using WebApplication7.Helper;
 
 namespace WebApplication7.Controllers
 {
@@ -13,19 +15,25 @@ namespace WebApplication7.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IMapper _mapper;
+        private readonly MapperHelper _mapperHelper;
 
-
-
-        public PlaceController(IPlace placeRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> _signInManager, IWebHostEnvironment webHostEnvironment)
-
-
-
+        public PlaceController(
+            IPlace placeRepository, 
+            UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> _signInManager, 
+            IWebHostEnvironment webHostEnvironment,
+            IMapper mapper,
+            MapperHelper mapperHelper)
         {
             _userManager = userManager;
             signInManager = _signInManager;
             _webHostEnvironment = webHostEnvironment;
             _placeRepository = placeRepository;
+            _mapper = mapper;
+            _mapperHelper = mapperHelper;
         }
+
         public IActionResult Index()
         {
             var placesList = _placeRepository.GetPlaces();
@@ -55,6 +63,7 @@ namespace WebApplication7.Controllers
 
             return View("AddPlace", place);
         }
+        
         [HttpGet]
         public IActionResult Details(int id)
         {
@@ -66,6 +75,7 @@ namespace WebApplication7.Controllers
 
             return View(place);
         }
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -95,6 +105,7 @@ namespace WebApplication7.Controllers
 
             return View("Edit", updatedPlace);
         }
+
         public IActionResult Delete(int id)
         {
             _placeRepository.Delete(id);

@@ -1,0 +1,47 @@
+@model IEnumerable<WebApplication7.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>User Management</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    <a asp-action="ManageUserRoles" asp-route-userId="@user.Id" class="btn btn-sm btn-info">Manage Roles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to Admin Panel</a>
+</div> 

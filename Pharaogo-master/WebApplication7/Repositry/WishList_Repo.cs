@@ -1,20 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 using WebApplication7.Models;
+using WebApplication7.Data;
 using WebApplication7.Repositry.IRepositry;
 using WebApplication7.ViewModels;
+using AutoMapper;
+
 namespace WebApplication7.Repositry
 {
     public class WishList_Repo : IWishList
     {
-        DepiContext _context;
-        public WishList_Repo(DepiContext _context)
+        private readonly DepiContext _context;
+        private readonly IMapper _mapper;
+
+        public WishList_Repo(DepiContext context, IMapper mapper)
         {
-            this._context = _context;
+            _context = context;
+            _mapper = mapper;
         }
+
         public string Add(int id, string userId)
         {
-            bool exists = _context.wishLists.Any(w => w.PlaceId == id && w.UserID == userId);
+            bool exists = _context.WishLists.Any(w => w.PlaceId == id && w.UserID == userId);
 
             if (!exists)
             {
@@ -24,7 +32,7 @@ namespace WebApplication7.Repositry
                     UserID = userId
                 };
 
-                _context.wishLists.Add(wishList);
+                _context.WishLists.Add(wishList);
                 Save();
 
                 return "Item added to wishlist successfully.";
@@ -35,41 +43,39 @@ namespace WebApplication7.Repositry
             }
         }
 
-        public WishLlistViewModel Getwish(string userid)
+        public WishLlistViewModel Getwish(string userId)
         {
-            var list = _context.wishLists
-            .Include(w => w.place)
-            .Where(w => w.UserID == userid)
-            .Select(w => new Place
+            // Get wishlist items with their related places
+            var wishlistItems = _context.WishLists
+                .Include(w => w.place)
+                .Where(w => w.UserID == userId)
+                .ToList();
+            
+            // Extract places from the wishlist items
+            var places = wishlistItems.Select(w => w.place).ToList();
+                
+            // Create the view model
+            var viewModel = new WishLlistViewModel
             {
-                // Assuming PlaceViewModel has these properties, map them accordingly
-                Place_Name = w.place.Place_Name,
-                Place_City = w.place.Place_City,
-                dbimage = w.place.dbimage,
-                Place_Price = w.place.Place_Price,
-                Place_Rating = w.place.Place_Rating,
-                Place_Type = w.place.Place_Type,
-                Place_Id = w.place.Place_Id,
-                // Add more properties as needed based on PlaceViewModel structure
-            })
-            .ToList();
-            WishLlistViewModel wl = new WishLlistViewModel
-            {
-                places = list,
-                Message = list.Any() ? null : "Your wishlist is currently empty."
+                places = places,
+                Message = places.Any() ? null : "Your wishlist is currently empty."
             };
-            return wl;
+            
+            return viewModel;
         }
-        public void Delete(int id, string userid)
+
+        public void Delete(int id, string userId)
         {
-            var place = _context.wishLists
-                .FirstOrDefault(w => w.PlaceId == id && w.UserID == userid);
+            var place = _context.WishLists
+                .FirstOrDefault(w => w.PlaceId == id && w.UserID == userId);
+                
             if (place != null)
             {
-                _context.wishLists.Remove(place);
+                _context.WishLists.Remove(place);
                 Save();
             }
         }
+        
         public void Save()
         {
             _context.SaveChanges();

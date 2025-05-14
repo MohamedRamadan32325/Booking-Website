@@ -35,13 +35,7 @@
                 <div style="text-align: center;">
                     @if (User.Identity.IsAuthenticated == false)
                     {
-                        <a href="/Account/Login">
-                            <button class="login">Log in</button>
-                        </a>
-                        <a href="/Account/Register">
-                            <button class="signup">Sign up</button>
-                        </a>
-
+                        @* Removed the duplicate login/signup buttons since they're now in the navbar *@
                     }
                 </div>
 
