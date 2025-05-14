@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{81F37CCF-5B89-44AC-B075-247F9A2D1C8E}|WebApplication7\\WebApplication7.csproj|c:\\users\\amr\\source\\repos\\booking-website\\pharaogo-master\\webapplication7\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{81F37CCF-5B89-44AC-B075-247F9A2D1C8E}|WebApplication7\\WebApplication7.csproj|solutionrelative:webapplication7\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{81F37CCF-5B89-44AC-B075-247F9A2D1C8E}|WebApplication7\\WebApplication7.csproj|c:\\users\\amr\\source\\repos\\booking-website\\pharaogo-master\\webapplication7\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{81F37CCF-5B89-44AC-B075-247F9A2D1C8E}|WebApplication7\\WebApplication7.csproj|solutionrelative:webapplication7\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -26,60 +30,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "WebApplication7\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "WebApplication7\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAALoAAAAAAAAAAAAAAMAAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-14T15:57:17.24Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "WebApplication7\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "WebApplication7\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-14T15:23:13.273Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "WishList_Repo.cs",
-              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Repositry\\WishList_Repo.cs",
-              "RelativeDocumentMoniker": "WebApplication7\\Repositry\\WishList_Repo.cs",
-              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Repositry\\WishList_Repo.cs",
-              "RelativeToolTip": "WebApplication7\\Repositry\\WishList_Repo.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAjwBgAAABVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-14T15:04:43.567Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "DepiContext.cs",
-              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Data\\DepiContext.cs",
-              "RelativeDocumentMoniker": "WebApplication7\\Data\\DepiContext.cs",
-              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Data\\DepiContext.cs",
-              "RelativeToolTip": "WebApplication7\\Data\\DepiContext.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAA0wCgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-14T14:55:33.157Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
@@ -87,6 +39,67 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{a83394e3-39c2-4678-a3c8-364b69d78fd3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication7\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "WebApplication7\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAALIAAAAAAAAAAAAAAMQAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-14T19:04:16.656Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "WebApplication7\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "WebApplication7\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAFABAAAAAAAAAAAewGMBAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-14T15:57:17.24Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "WebApplication7\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "WebApplication7\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T15:23:13.273Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "WishList_Repo.cs",
+              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Repositry\\WishList_Repo.cs",
+              "RelativeDocumentMoniker": "WebApplication7\\Repositry\\WishList_Repo.cs",
+              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Repositry\\WishList_Repo.cs",
+              "RelativeToolTip": "WebApplication7\\Repositry\\WishList_Repo.cs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAjwBgAAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T15:04:43.567Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DepiContext.cs",
+              "DocumentMoniker": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Data\\DepiContext.cs",
+              "RelativeDocumentMoniker": "WebApplication7\\Data\\DepiContext.cs",
+              "ToolTip": "C:\\Users\\Amr\\source\\repos\\Booking-Website\\Pharaogo-master\\WebApplication7\\Data\\DepiContext.cs",
+              "RelativeToolTip": "WebApplication7\\Data\\DepiContext.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAA0wCgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T14:55:33.157Z"
             }
           ]
         }

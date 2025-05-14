@@ -67,7 +67,87 @@
     ======================================================== -->
 </head>
 <body>
-    <header id="header" class="header d-flex align-items-center sticky-top">
+    <style>
+        /* Navigation bar styles */
+        #header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            z-index: 1000;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        #header .container-fluid {
+            height: 100%;
+        }
+        
+        #navmenu {
+            height: 100%;
+        }
+        
+        #navmenu ul {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        
+        #navmenu ul li {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Dropdown styles - vertical display */
+        .dropdown ul {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            display: none;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            height: auto !important;
+            z-index: 1001;
+        }
+        
+        /* Settings dropdown specific alignment */
+        .dropdown .settings-icon + ul {
+            right: 0;
+            left: auto;
+        }
+        
+        .dropdown ul li {
+            width: 100%;
+            height: auto !important;
+            padding: 0;
+        }
+        
+        .dropdown ul li a {
+            padding: 10px 15px;
+            width: 100%;
+            display: block;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown ul li a:hover {
+            background-color: #f8f9fa;
+            color: #a59056;
+        }
+        
+        .dropdown:hover ul,
+        .dropdown ul.show {
+            display: block;
+        }
+    </style>
+    <header id="header" class="header d-flex align-items-center">
         <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
 
             <a href="/Home/Index" class="logo d-flex align-items-center me-auto me-xl-0">
@@ -80,7 +160,7 @@
                 </h1>
                 
             </a>
-
+            
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a asp-action="Index" asp-controller="Home" class="active">Home<br></a></li>
@@ -135,49 +215,30 @@
                     const dropdownParent = event.currentTarget.parentNode;
                     const dropdownMenu = dropdownParent.querySelector('ul');
                     
-                    if (dropdownMenu.style.display === 'block') {
-                        dropdownMenu.style.display = 'none';
+                    if (dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
                     } else {
-                        dropdownMenu.style.display = 'block';
+                        // Close all other open dropdowns first
+                        const allDropdowns = document.querySelectorAll('.dropdown ul');
+                        allDropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+                        
+                        // Open this dropdown
+                        dropdownMenu.classList.add('show');
                     }
                 }
                 
                 // Close dropdown when clicking outside
                 document.addEventListener('click', function(event) {
-                    const dropdowns = document.querySelectorAll('.dropdown ul');
-                    dropdowns.forEach(function(dropdown) {
-                        if (!event.target.closest('.dropdown')) {
-                            dropdown.style.display = 'none';
-                        }
-                    });
+                    if (!event.target.closest('.dropdown')) {
+                        const dropdowns = document.querySelectorAll('.dropdown ul');
+                        dropdowns.forEach(function(dropdown) {
+                            dropdown.classList.remove('show');
+                        });
+                    }
                 });
             </script>
-
-            <div class="search-wrapper">
-                <form class="d-flex" asp-controller="Search" asp-action="Index" method="get">
-                    <input class="form-control mr-2" type="search" name="MaxPrice" placeholder="Enter max price" aria-label="Search">
-                    <input class="form-control mr-2" type="search" name="searchQuery" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline" name="search_icon" type="submit">Search</button>
-                </form>
-            </div>
-            <style>
-                .btn-outline {
-                    color: #a59056;
-                    border-color: white;
-                    background-color: white;
-                }
-
-                    .btn-outline:hover {
-                        color: white;
-                        border-color: #a59056;
-                        background-color: #a59056;
-                    }
-                
-                .search-wrapper {
-                    display: flex;
-                    align-items: center;
-                }
-                
+            
+            <style>                
                 .login-btn, .signup-btn {
                     display: inline-block;
                     padding: 8px 15px;
@@ -196,12 +257,6 @@
                 
                 .login-btn:hover {
                     color: #a59056 !important;
-                }
-
-                @@media (max-width: 991px) {
-                    .search-wrapper {
-                        display: none;
-                    }
                 }
             </style>
            
@@ -225,85 +280,89 @@
     </div>
 
     <footer id="footer" class="footer dark-background">
-
-        <div class="footer-top">
-            <div class="container">
-                <div class="row gy-4">
-                    <div class="col-lg-4 col-md-6 footer-about">
-                        <a asp-action="Index" asp-controller="Home" class="logo d-flex align-items-center">
-                            <span class="sitename">PharaoGo</span>
-                        </a>
-                        <div class="footer-contact pt-3">
-                            <p class="mt-3"><strong>Phone:</strong> <span>+201159011052</span></p>
-                            <p><strong>Email:</strong> <span>mr2407@fayoum.edu.eg</span></p>
-                        </div>
+        <div class="container py-4">
+            <div class="row align-items-center gy-4">
+                <div class="col-12 col-md-4 d-flex flex-column align-items-md-start align-items-center mb-3 mb-md-0">
+                    <span class="footer-contact mb-2" style="font-size:15px; color:rgba(255,255,255,0.85);">Phone: +20123456789</span>
+                    <span class="footer-contact mb-2" style="font-size:15px; color:rgba(255,255,255,0.85);">Email: Pharaogo@fayoum.edu.eg</span>
+                    <form class="newsletter-form w-100 mt-2 d-flex" style="max-width:260px;">
+                        <input type="email" id="newsletterEmail" placeholder="Your email..." class="form-control form-control-sm rounded-start" style="background:rgba(255,255,255,0.15); color:white; border:none;" />
+                        <button type="submit" class="btn btn-sm rounded-end" style="background:#B79959; color:white;">Subscribe</button>
+                    </form>
+                </div>
+                <div class="col-12 col-md-4 d-flex flex-column align-items-center">
+                    <div class="footer-nav d-flex flex-wrap justify-content-center gap-4 mb-2">
+                        <a asp-action="Index" asp-controller="Home" class="footer-link" style="color:rgba(255,255,255,0.7); font-size:15px; text-decoration:underline;">Home</a>
+                        <a asp-action="AboutUs" asp-controller="Home" class="footer-link" style="color:rgba(255,255,255,0.7); font-size:15px;">About us</a>
+                        <a asp-action="Index" asp-controller="Home" class="footer-link" style="color:rgba(255,255,255,0.7); font-size:15px;">Places</a>
                     </div>
-
-                    <div class="col-lg-2 col-md-3 footer-links">
-                        <ul>
-                            <li><a asp-action="Index" asp-controller="Home">Home</a></li>
-                            <li><a asp-action="AboutUs" asp-controller="Home">About us</a></li>
-                            <li><a asp-action="Index" asp-controller="Home">Places</a></li>
-
-
-                        </ul>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-md-end justify-content-center align-items-center">
+                    <a href="https://github.com/MohamedRamadan32325/Booking-Website" target="_blank" id="github-link" class="footer-social d-flex align-items-center" style="color:rgba(255,255,255,0.7); font-size:28px;">
+                        <i class="bi bi-github"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="copyright text-center" style="font-size:15px; opacity:0.6; border-top:1px solid rgba(255,255,255,0.12); padding-top:12px;">
+                        © Copyright <strong>PharaoGo</strong>. All Rights Reserved
                     </div>
-
-                    <div class="col-lg-2 col-md-3 footer-links">
-                        <h4>Our Services</h4>
-                        <ul>
-                            <li><a asp-action="Header_Museums" asp-controller="Home">Musuems</a></li>
-                            <li><a asp-action="Header_Hotels" asp-controller="Home">Hotels</a></li>
-
-
-                        </ul>
-                    </div>
-
-                    @*  <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Hic solutasetp</h4>
-                    <ul>
-                    <li><a href="#">Molestiae accusamus iure</a></li>
-                    <li><a href="#">Excepturi dignissimos</a></li>
-                    <li><a href="#">Suscipit distinctio</a></li>
-                    <li><a href="#">Dilecta</a></li>
-                    <li><a href="#">Sit quas consectetur</a></li>
-                    </ul>
-                    </div> *@
-
-                    @*  <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Nobis illum</h4>
-                    <ul>
-                    <li><a href="#">Ipsam</a></li>
-                    <li><a href="#">Laudantium dolorum</a></li>
-                    <li><a href="#">Dinera</a></li>
-                    <li><a href="#">Trodelas</a></li>
-                    <li><a href="#">Flexo</a></li>
-                    </ul>
-                    </div> *@
-
                 </div>
             </div>
         </div>
-
-        <div class="copyright text-center">
-            <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-
-                <div class="d-flex flex-column align-items-center align-items-lg-start">
-                    <div>
-                        © Copyright <strong><span>PharaoGo</span></strong>. All Rights Reserved
-                    </div>
-
-                </div>
-
-                <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-                    <a href="https://github.com/MohamedRamadan32325/DepiProjectFInal.git"><i class="bi bi-github"></i></a>
-
-                </div>
-
-            </div>
-        </div>
-
     </footer>
+    <style>
+        #footer {
+            background: linear-gradient(90deg, #3a4753 70%, #b79959 100%);
+            color: white;
+            margin-top: 60px;
+        }
+        .footer-contact {
+            font-size: 15px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.85);
+        }
+        .newsletter-form input {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+        .newsletter-form input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        .newsletter-form button {
+            background: #B79959;
+            color: white;
+            border: none;
+        }
+        .footer-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        .footer-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        .footer-social {
+            font-size: 28px;
+            color: rgba(255,255,255,0.7);
+            transition: color 0.3s;
+        }
+        .footer-social:hover {
+            color: #fff;
+        }
+        @@media (max-width: 768px) {
+            #footer .row.align-items-center {
+                flex-direction: column !important;
+                gap: 24px;
+            }
+            .footer-nav {
+                gap: 18px !important;
+            }
+        }
+    </style>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
