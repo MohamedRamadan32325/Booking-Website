@@ -279,90 +279,334 @@
         </main>
     </div>
 
-    <footer id="footer" class="footer dark-background">
-        <div class="container py-4">
-            <div class="row align-items-center gy-4">
-                <div class="col-12 col-md-4 d-flex flex-column align-items-md-start align-items-center mb-3 mb-md-0">
-                    <span class="footer-contact mb-2" style="font-size:15px; color:rgba(255,255,255,0.85);">Phone: +20123456789</span>
-                    <span class="footer-contact mb-2" style="font-size:15px; color:rgba(255,255,255,0.85);">Email: Pharaogo@fayoum.edu.eg</span>
-                    <form class="newsletter-form w-100 mt-2 d-flex" style="max-width:260px;">
-                        <input type="email" id="newsletterEmail" placeholder="Your email..." class="form-control form-control-sm rounded-start" style="background:rgba(255,255,255,0.15); color:white; border:none;" />
-                        <button type="submit" class="btn btn-sm rounded-end" style="background:#B79959; color:white;">Subscribe</button>
+    <footer id="footer" class="footer">
+        <div class="ankh-divider">
+            <div class="ankh-symbol"></div>
+        </div>
+        <div class="container">
+            <div class="footer-content">
+                <!-- Brand & Contact Column -->
+                <div class="footer-column brand-column">
+                    <div class="footer-brand">
+                        <h3><span class="brand-text">PharaoGo</span></h3>
+                    </div>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone-alt"></i> +20123456789</p>
+                        <p><i class="fas fa-envelope"></i> Support@Pharaogo.com</p>
+                    </div>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Navigation Column -->
+                <div class="footer-column nav-column">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a asp-action="Index" asp-controller="Home">Home</a></li>
+                        <li><a asp-action="AboutUs" asp-controller="Home">About Us</a></li>
+                        <li><a asp-action="Index" asp-controller="Home">Places</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services Column -->
+                <div class="footer-column services-column">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Our Services</a></li>
+                        <li><a asp-action="Header_Museums" asp-controller="Home">Museums</a></li>
+                        <li><a asp-action="Header_Hotels" asp-controller="Home">Hotels</a></li>
+                        <li><a href="#">Tours & Packages</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter Column -->
+                <div class="footer-column newsletter-column">
+                    <h4>Stay Updated</h4>
+                    <p>Subscribe to receive our latest travel deals and Egyptian adventure opportunities.</p>
+                    <form class="footer-newsletter">
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email Address" class="newsletter-input">
+                            <button type="submit" class="newsletter-btn">
+                                <i class="far fa-paper-plane"></i>
+                            </button>
+                        </div>
                     </form>
-                </div>
-                <div class="col-12 col-md-4 d-flex flex-column align-items-center">
-                    <div class="footer-nav d-flex flex-wrap justify-content-center gap-4 mb-2">
-                        <a asp-action="Index" asp-controller="Home" class="footer-link" style="color:rgba(255,255,255,0.7); font-size:15px; text-decoration:underline;">Home</a>
-                        <a asp-action="AboutUs" asp-controller="Home" class="footer-link" style="color:rgba(255,255,255,0.7); font-size:15px;">About us</a>
-                        <a asp-action="Index" asp-controller="Home" class="footer-link" style="color:rgba(255,255,255,0.7); font-size:15px;">Places</a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 d-flex justify-content-md-end justify-content-center align-items-center">
-                    <a href="https://github.com/MohamedRamadan32325/Booking-Website" target="_blank" id="github-link" class="footer-social d-flex align-items-center" style="color:rgba(255,255,255,0.7); font-size:28px;">
-                        <i class="bi bi-github"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="copyright text-center" style="font-size:15px; opacity:0.6; border-top:1px solid rgba(255,255,255,0.12); padding-top:12px;">
-                        © Copyright <strong>PharaoGo</strong>. All Rights Reserved
-                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Copyright Bar with Egyptian Border -->
+        <div class="copyright-bar">
+            <div class="egyptian-border"></div>
+            <div class="container">
+                <p>© Copyright <strong>PharaoGo</strong>. All Rights Reserved</p>
+                <p class="small">Experience the wonder of ancient Egypt with modern comfort</p>
+            </div>
+        </div>
     </footer>
+    
     <style>
+        /* Egyptian-themed Footer Styles */
         #footer {
-            background: linear-gradient(90deg, #3a4753 70%, #b79959 100%);
-            color: white;
+            background-color: #3a424a; /* Dark slate blue/gray from image */
+            color: #d8d8d8; /* Light gray text color from image */
+            padding: 0 0 0 0;
             margin-top: 60px;
+            position: relative;
         }
-        .footer-contact {
-            font-size: 15px;
-            font-weight: 400;
-            color: rgba(255,255,255,0.85);
+        
+        /* Ankh Divider at Top */
+        .ankh-divider {
+            height: 40px;
+            background-color: #3a424a; /* Match footer background */
+            position: relative;
+            text-align: center;
         }
-        .newsletter-form input {
-            background: rgba(255,255,255,0.15);
-            color: white;
+        
+        .ankh-symbol {
+            width: 40px;
+            height: 60px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="%2380CBC0" d="M160 0c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48s-48-21.5-48-48V48c0-26.5 21.5-48 48-48zM88 352h144c13.3 0 24 10.7 24 24s-10.7 24-24 24h-56v64h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H112c-13.3 0-24-10.7-24-24s10.7-24 24-24h32V400H88c-13.3 0-24-10.7-24-24s10.7-24 24-24z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
         }
-        .newsletter-form input::placeholder {
-            color: rgba(255,255,255,0.6);
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            padding: 60px 0 40px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" fill="none"/><path fill="%2380CBC022" d="M30 20 L50 10 L70 20 L70 45 L50 55 L30 45 Z"/></svg>');
+            background-size: 180px;
+            background-repeat: repeat;
         }
-        .newsletter-form button {
-            background: #B79959;
-            color: white;
-            border: none;
+        
+        .footer-column h4 {
+            color: #80CBC0; /* Teal accent color from image */
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 600;
         }
-        .footer-link {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-size: 15px;
-            transition: color 0.3s;
+        
+        .footer-column h4:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 2px;
+            width: 40px;
+            background-color: #80CBC0; /* Teal accent color */
         }
-        .footer-link:hover {
-            color: #fff;
-            text-decoration: underline;
+        
+        .brand-text {
+            color: #ffffff; /* White text for brand from image */
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
-        .footer-social {
+        
+        .footer-brand h3 {
             font-size: 28px;
-            color: rgba(255,255,255,0.7);
-            transition: color 0.3s;
+            margin-bottom: 20px;
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 700;
         }
-        .footer-social:hover {
-            color: #fff;
+        
+        .footer-contact p {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
         }
-        @@media (max-width: 768px) {
-            #footer .row.align-items-center {
-                flex-direction: column !important;
-                gap: 24px;
+        
+        .footer-contact i {
+            color: #80CBC0; /* Teal accent color */
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(128, 203, 192, 0.15);
+            color: #80CBC0;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background-color: #80CBC0;
+            color: #3a424a;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .footer-links a {
+            color: #d8d8d8; /* Light gray from image */
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding-left: 0;
+            display: inline-block;
+        }
+        
+        .footer-links a:before {
+            content: "›";
+            color: #80CBC0;
+            position: absolute;
+            left: -15px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #80CBC0; /* Teal accent on hover */
+            padding-left: 15px;
+        }
+        
+        .footer-links a:hover:before {
+            opacity: 1;
+            left: 0;
+        }
+        
+        .newsletter-column p {
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .footer-newsletter .form-group {
+            display: flex;
+            position: relative;
+        }
+        
+        .newsletter-input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(128, 203, 192, 0.3);
+            color: #d8d8d8;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .newsletter-input::placeholder {
+            color: rgba(216, 216, 216, 0.5);
+        }
+        
+        .newsletter-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            height: calc(100% - 10px);
+            width: 40px;
+            background-color: #80CBC0;
+            color: #3a424a;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-btn:hover {
+            background-color: #9dd8d0;
+        }
+        
+        /* Egyptian Border */
+        .egyptian-border {
+            height: 10px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="10" viewBox="0 0 32 10"><path fill="%2380CBC0" d="M0 0h4v4h4v-4h4v4h4v-4h4v4h4v-4h4v4h4v-4h4v10h-4v-4h-4v4h-4v-4h-4v4h-4v-4h-4v4h-4v-4h-4v4h-4z"/></svg>');
+            background-repeat: repeat-x;
+            background-size: 32px 10px;
+        }
+        
+        .copyright-bar {
+            text-align: center;
+            padding: 20px 0 15px;
+            background-color: #2d343c; /* Darker slate from image */
+        }
+        
+        .copyright-bar p {
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        .copyright-bar p.small {
+            font-size: 12px;
+            color: rgba(216, 216, 216, 0.6);
+            margin-top: 5px;
+        }
+        
+        .copyright-bar strong {
+            color: #80CBC0; /* Teal accent */
+        }
+        
+        /* Responsive Adjustments */
+        @@media (max-width: 992px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .footer-nav {
-                gap: 18px !important;
+        }
+        
+        @@media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+            
+            .footer-column h4:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-contact p {
+                justify-content: center;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+            
+            .footer-links a:before {
+                display: none;
+            }
+            
+            .footer-links a:hover {
+                padding-left: 0;
             }
         }
     </style>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
