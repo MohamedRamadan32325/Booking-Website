@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication7.Data;
 using WebApplication7.Models;
@@ -6,6 +6,7 @@ using WebApplication7.Repositry;
 using WebApplication7.Repositry.IRepositry;
 using WebApplication7.Helper;
 using Serilog;
+using Microsoft.Extensions.FileProviders;
 
 namespace WebApplication7
 {
@@ -123,6 +124,23 @@ namespace WebApplication7
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+           
+            var env = builder.Environment;
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(env.ContentRootPath, "wwwroot/Images")
+              ),
+                RequestPath = "/Images"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(env.ContentRootPath, "wwwroot/assets/img")
+              ),
+                RequestPath = "/assets/img"
+            });
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
