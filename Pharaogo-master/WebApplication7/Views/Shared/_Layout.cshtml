@@ -1,8 +1,11 @@
-﻿@using System.Security.Claims
+@using System.Security.Claims
 
 <html lang="en">
 
 <head>
+   
+
+    <base href="~/" />
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>PharaoGo</title>
@@ -10,8 +13,8 @@
     <meta name="keywords" content="">
 
     <!-- Favicons -->
-    <link href="/assets/img/LOGO.png" rel="icon" >
-    <link href="/assets/img/LOGO.png" rel="apple-touch-icon">
+    <link href="~/assets/img/logo.png" rel="icon">
+    <link href="~/assets/img/logo.png" rel="apple-touch-icon">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,14 +52,14 @@
         }
     </style>
     <!-- Vendor CSS Files -->
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/HomePage/css/bootstrap.min.css">
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/HomePage/css/bootstrap.min.css">
     <!-- Main CSS File -->
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="~/assets/css/main.css" rel="stylesheet">
 
     <!-- =======================================================
     * Template Name: HeroBiz
@@ -150,9 +153,9 @@
     <header id="header" class="header d-flex align-items-center">
         <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
 
-            <a href="/Home/Index" class="logo d-flex align-items-center me-auto me-xl-0">
+            <a href="~/Home/Index" class="logo d-flex align-items-center me-auto me-xl-0">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
-                <img src="/assets/img/LOGO.png" alt="" style="width:80px">
+                <img src="~/assets/img/logo.png" asp-append-version="true" alt="" style="width:80px">
                 <h1 class="sitename" style=" font-family:  Rajdhani, sans-serif;
                     font-weight: 500;
                     font-style: normal;">
@@ -181,7 +184,7 @@
                     {
                         <li class="dropdown">
                             <a href="#" class="settings-icon" onclick="toggleDropdown(event)">
-                                <img src="~/Images/settings.png" width="20px" />
+                                <img src="~/Images/settings.png" asp-append-version="true" width="20px" />
                                 <i class="bi bi-chevron-down toggle-dropdown"></i>
                             </a>
                             <ul>
@@ -608,8 +611,8 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
