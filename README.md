@@ -69,6 +69,28 @@ Pharaogo is an ASP.NET Core 8.0 MVC project designed to facilitate tourists to b
 
 3. Open your browser and navigate to `https://localhost:5001`.
 
+## Docker Compose
+
+You can spin up both the web app and the SQL Server database in containers with a single command:
+
+1. Make sure you have a `.env` file in the same folder as `docker-compose.yml`, containing at least:
+
+   ```dotenv
+   # .env
+   SQLSERVER_SA_PASSWORD=YourStrong!Passw0rd
+   ConnectionStrings__DefaultConnection=Server=db;Database=PharaogoDB;User=sa;Password=${SQLSERVER_SA_PASSWORD};
+   ASPNETCORE_ENVIRONMENT=Development
+   ```
+2. Create (or update) docker-compose.yml alongside your project root
+3. From your project folder, run:
+   ```bash
+   docker compose up -d
+   ```
+4. Open your browser and navigate to:
+   ```
+   http://localhost:5000
+   ```
+
 ## Project Structure
 
 ```
